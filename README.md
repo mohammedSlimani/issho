@@ -1,2 +1,6 @@
 # issho
-FINAL PROJECT ENSIAS
+The Face Of the Facebook
+- Issho means in Japanese Together.
+- Brings people with the same interests together.
+- Organaize events In a very straight forward way.
+- Expolre yourself as individual. Do new stuff everyday.
