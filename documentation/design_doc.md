@@ -34,3 +34,12 @@ Event-Driven Architecure: It is the best one for our needs for the following rea
 - [Angular](https://angular.io): For the WebApp.
 - [NativeScript](https://www.nativescript.org/): To reuse the webapp code to make a mobile app.
 - [Python](https://www.python.org): For the AI recommondation system.
+
+
+##  Apache Kafka
+- Kafka is an event streaming plateform, it handles every transaction between the components of the system as an event.
+- if confugured well, kafka can provide a unified, HIGHT-THROUGHPUT, LOW-LATENCY platform for handling REAL-TIME data feeds.
+- the component of the system can be considered Producers and Consumers
+- producers and consumers do not depend on each other ( can be in different langages )
+- kafka appends every new comin event to one of the queues he contains ( also called Topic)
+- ...
