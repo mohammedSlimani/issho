@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>discover</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="6" offset-md="3">
+          <ion-card 
+          [routerLink]="['/', 'posts', 'tabs', 'discover', relevantPosts[0].id]" 
+          routerDirection="forward" 
+          lines="none"
+          no-padding>
+              <ion-img [src]="relevantPosts[0].imgUrl"></ion-img>
+              <ion-card-header>
+                <ion-card-title>{{relevantPosts[0].title}}</ion-card-title>
+                <ion-card-subtitle>
+                  <ion-row>
+                  <ion-col size-md="2">
+                      <ion-icon name="calendar"></ion-icon>
+                      <ion-text color="teritiary" class="space-left">{{relevantPosts[0].date | date}}</ion-text>
+                  </ion-col>
+                  <ion-col size-md="2">
+                      <ion-icon name="pin"></ion-icon>
+                        <ion-text color="teritiary" class="space-left">{{relevantPosts[0].loc}}</ion-text>
+                  </ion-col>
+                  <ion-col size-md="2" >
+                    <ion-icon name="walk"></ion-icon>
+                    <ion-text color="teritiary" class="space-left">{{relevantPosts[0].onGoin}}</ion-text>
+                  </ion-col>
+                </ion-row>
+                </ion-card-subtitle>
+              </ion-card-header>
+            </ion-card>
+
+            <ion-card *ngFor="let post of listedPosts" 
+          [routerLink]="['/', 'posts', 'tabs', 'discover', post.id]" 
+          routerDirection="forward" 
+          lines="none"
+          no-padding>
+              <ion-card-header>
+                <ion-card-title>{{post.title}}</ion-card-title>
+              <ion-card-subtitle>
+                <ion-row>
+                  <ion-col size-md="2">
+                      <ion-icon name="calendar"></ion-icon>
+                      <ion-text color="teritiary" class="space-left">{{post.date | date}}</ion-text>
+                  </ion-col>
+                  <ion-col size-md="2">
+                      <ion-icon name="pin"></ion-icon>
+                        <ion-text color="teritiary" class="space-left">{{post.loc}}</ion-text>
+                  </ion-col>
+                  <ion-col size-md="2" >
+                    <ion-icon name="walk"></ion-icon>
+                    <ion-text color="teritiary" class="space-left">{{post.onGoin}}</ion-text>
+                  </ion-col>
+                </ion-row>
+              </ion-card-subtitle>
+                
+              </ion-card-header>
+
+            </ion-card>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
