@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/posts/tabs/discover"></ion-back-button>
+    </ion-buttons>
+    <ion-title>post-detail</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-grid padding>
+    <ion-row>
+      <ion-col size-md="6" offset-md="3">
+        <ion-img [src]="post.imgUrl"></ion-img>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" offset-md="3">
+        <h1>{{post.title}}</h1>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" offset-md="3">
+        <h3>{{post.date | date}}</h3>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" offset-md="3">
+        <p>{{post.des}}</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-md="6" offset-md="3">
+        <ion-button color="primary" margin (click)="onPostParticipate()" >
+          Participate
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+</ion-content>
