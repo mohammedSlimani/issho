@@ -26,7 +26,7 @@ export class MypostsPage implements OnInit, OnDestroy {
 
   ngOnInit() {
       this.userId = this.authService.userId;
-      this.postSub = this.postService.posts.subscribe(posts => {
+      this.postSub = this.postService.read().subscribe(posts => {
       this.loadedPosts = posts.filter(p => p.userId === this.userId);
     });
   }
@@ -56,7 +56,7 @@ export class MypostsPage implements OnInit, OnDestroy {
       .then(loadingEl => {
         loadingEl.present();
 
-        this.postService.deletePost(postId)
+        this.postService.delete(postId)
           .subscribe( () => {
             loadingEl.dismiss();
             console.log('onPostDelete()');

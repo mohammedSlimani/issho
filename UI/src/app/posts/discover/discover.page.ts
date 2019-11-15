@@ -5,9 +5,9 @@ import { MenuController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: "app-discover",
-  templateUrl: "./discover.page.html",
-  styleUrls: ["./discover.page.scss"]
+  selector: 'app-discover',
+  templateUrl: './discover.page.html',
+  styleUrls: ['./discover.page.scss']
 })
 export class DiscoverPage implements OnInit, OnDestroy {
   listedPosts: Post[];
@@ -21,7 +21,7 @@ export class DiscoverPage implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.postSub = this.postService.posts.subscribe(posts => {
+    this.postSub = this.postService.read().subscribe(posts => {
       this.relevantPosts = posts;
       this.listedPosts = this.relevantPosts.slice(1);
       console.log(this.listedPosts);

@@ -60,12 +60,17 @@ export class EditPostPage implements OnInit {
       .create({ keyboardClose: true, message: 'editing post' })
       .then(loadingEl => {
         loadingEl.present();
-
         this.postService
-          .editPost(
-            this.post.id,
-            this.form.value.title,
-            this.form.value.description)
+          .update(
+              new Post(
+                this.post.id,
+                this.form.value.title,
+                this.form.value.description,
+                this.post.imgUrl,
+                this.post.userId,
+                this.post.date,
+                this.post.loc,
+                this.post.goin) )
           .subscribe( () => {
             loadingEl.dismiss();
             this.form.reset();
