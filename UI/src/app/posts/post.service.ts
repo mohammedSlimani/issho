@@ -3,11 +3,12 @@ import { Post } from './post.model';
 import { AuthService } from '../auth/auth.service';
 import { take, map, tap, delay } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
+import { Crud } from '../crud';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PostService {
+export class PostService implements Crud<Post[]> {
   private _posts = new BehaviorSubject<Post[]>([
     new Post(
       '11',
@@ -61,8 +62,43 @@ export class PostService {
 
   constructor(private authService: AuthService) {}
 
-  get posts() {
+  create(post: Post) {
+    return this.read().pipe(
+      take(1),
+      delay(1000),
+      tap(places => {
+        this._posts.next(places.concat(post));
+      })
+    );
+  }
+
+  read() {
     return this._posts.asObservable();
+  }
+
+  update(post: Post) {
+    return this.read().pipe(
+      take(1),
+      delay(1000),
+      tap(posts => {
+        const updatedId = posts.findIndex(pl => pl.id === post.id);
+        const updatedPosts = [...posts];
+        updatedPosts[updatedId] = post;
+        this._posts.next(updatedPosts);
+      })
+    );
+  }
+
+  delete(postId: string) {
+    return this.read().pipe(
+      take(1),
+      delay(1000),
+      tap(posts => {
+        const updatedPosts = [...posts];
+        updatedPosts.filter(p => p.id === postId);
+        this._posts.next(updatedPosts.filter(p => p.id !== postId));
+      })
+    );
   }
 
   getPost(postId: string) {
@@ -70,62 +106,6 @@ export class PostService {
       take(1),
       map(posts => {
         return { ...posts.find(p => p.id === postId) };
-      })
-    );
-  }
-
-  addPost(title: string, des: string, date: Date) {
-    const newPost = new Post(
-      Math.random().toString(),
-      title,
-      des,
-      'https://upload.wikimedia.org/wikipedia/commons/0/01/San_Francisco_with_two_bridges_and_the_fog.jpg',
-      this.authService.userId,
-      date
-    );
-
-    return this.posts.pipe(
-      take(1),
-      delay(1000),
-      tap(places => {
-        this._posts.next(places.concat(newPost));
-      })
-    );
-  }
-
-  editPost(postId: string, title: string, des: string) {
-    return this.posts.pipe(
-      take(1),
-      delay(1000),
-      tap(posts => {
-        const updatedId = posts.findIndex(pl => pl.id === postId);
-        const updatedPosts = [...posts];
-        const oldPost: Post = updatedPosts[updatedId];
-        updatedPosts[updatedId] = new Post(
-          oldPost.id,
-          title,
-          des,
-          oldPost.imgUrl,
-          oldPost.userId,
-          oldPost.date
-        );
-        this._posts.next(updatedPosts);
-      })
-    );
-  }
-
-  deletePost(postId: string) {
-    return this.posts.pipe(
-      take(1),
-      delay(1000),
-      tap(posts => {
-        const updatedPosts = [...posts];
-        updatedPosts.filter(p => p.id === postId);
-        this._posts.next(updatedPosts.filter(p => p.id !== postId));
-        console.log(
-          'deletePost()',
-          updatedPosts.filter(p => p.id !== postId)
-        );
       })
     );
   }

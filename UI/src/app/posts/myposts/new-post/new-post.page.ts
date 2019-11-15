@@ -3,6 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { PostService } from '../../post.service';
+import { Post } from '../../post.model';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-new-post',
@@ -17,7 +19,8 @@ export class NewPostPage implements OnInit {
   constructor(
     private loadingCtl: LoadingController,
     private router: Router,
-    private postService: PostService
+    private postService: PostService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -49,12 +52,15 @@ export class NewPostPage implements OnInit {
       .create({ keyboardClose: true, message: 'creating post' })
       .then(loadingEl => {
         loadingEl.present();
-
         this.postService
-          .addPost(
+          .create(
+            new Post(Math.random().toString(),
             this.form.value.title,
             this.form.value.description,
+            'https://upload.wikimedia.org/wikipedia/commons/0/01/San_Francisco_with_two_bridges_and_the_fog.jpg',
+            this.authService.userId,
             new Date(this.form.value.date))
+            )
           .subscribe( () => {
             loadingEl.dismiss();
             this.form.reset();

@@ -9,7 +9,7 @@ export class Post {
         public userId: string,
         public date: Date,
         public loc: string = 'Rabat',
-        public onGoin: number = 86
+        public goin: number = 86
     ) {}
 }
 
