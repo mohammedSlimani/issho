@@ -14,17 +14,17 @@ const routes: Routes = [
     path: 'user',
     children: [
       {
-        path: '',
-        loadChildren: './user/user.module#UserPageModule',
+        path: 'edit',
+        loadChildren: './user/edit-user/edit-user.module#EditUserPageModule',
         canLoad: [AuthGuard]
       },
       {
-        path: 'edit/:userId',
-        loadChildren: './user/edit-user/edit-user.module#EditUserPageModule'
+        path: ':userId',
+        loadChildren: './user/user.module#UserPageModule',
+        canLoad: [AuthGuard]
       }
     ]
   }
-
 ];
 
 @NgModule({

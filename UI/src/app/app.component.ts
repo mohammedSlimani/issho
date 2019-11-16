@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -29,6 +30,10 @@ export class AppComponent {
     });
   }
 
+
+  onMyAccount() {
+    this.router.navigate( ['/', 'user', this.authService.userId]);
+  }
 
 
   onLogout() {

@@ -55,6 +55,15 @@ export class UserService implements Crud<User[]> {
     );
   }
 
+  getUser(userId: string) {
+    return this.read().pipe(
+      take(1),
+      map(users => {
+        return { ...users.find(usr => usr.id === userId) };
+      })
+    );
+  }
+
   verifyLogin(email: string, pwd: string) {
     console.log('verifyLogin()');
     return this.read().pipe(
