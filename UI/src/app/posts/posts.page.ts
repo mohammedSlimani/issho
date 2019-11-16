@@ -12,4 +12,5 @@ export class PostsPage implements OnInit {
   ngOnInit() {
   }
 
+
 }
