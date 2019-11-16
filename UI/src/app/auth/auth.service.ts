@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 
 export class AuthService {
   private _userId;
-  private _userIsAuth = false;
+  private _userIsAuth = true;
 
 
   constructor(

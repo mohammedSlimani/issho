@@ -11,7 +11,7 @@ The Face Of the Facebook
 - [x] initial pages structure
 - [x] CRUD: post
 - [x] login
-- [ ] signup
+- [x] signup
 - [ ] CRUD: user
 - [ ] CRUD: going (bookings)
 - [ ] Connect NodeJs api

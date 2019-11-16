@@ -14,6 +14,10 @@
       <ion-col size-md="6" offset-md="3">
         
         <ion-list> 
+          <ion-item *ngIf="!isLogin">
+            <ion-label position="floating">name</ion-label>
+            <ion-input type="text" formControlName="name"></ion-input>
+          </ion-item>
           <ion-item>
             <ion-label position="floating">email</ion-label>
             <ion-input type="email" formControlName="email"></ion-input>
@@ -33,8 +37,7 @@
                       fill="clear" 
                       expand="full" 
                       (click)="onSwitchAuthMode()">switch to {{ isLogin ? 'Signup' : 'Login'}}</ion-button>
-          <ion-button (click)="onLogin()"
-                      [disabled]="!form.valid"
+          <ion-button (click)="onProceed()"
                       color="primary" 
                       *ngIf="!isLoading" 
                       expand="block" 
