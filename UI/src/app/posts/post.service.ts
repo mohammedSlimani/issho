@@ -66,8 +66,8 @@ export class PostService implements Crud<Post[]> {
     return this.read().pipe(
       take(1),
       delay(1000),
-      tap(places => {
-        this._posts.next(places.concat(post));
+      tap(posts => {
+        this._posts.next(posts.concat(post));
       })
     );
   }
@@ -102,7 +102,7 @@ export class PostService implements Crud<Post[]> {
   }
 
   getPost(postId: string) {
-    return this._posts.pipe(
+    return this.read().pipe(
       take(1),
       map(posts => {
         return { ...posts.find(p => p.id === postId) };

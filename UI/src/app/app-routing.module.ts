@@ -5,13 +5,26 @@ import { AuthGuard } from './auth/auth.guard';
 const routes: Routes = [
   { path: '', redirectTo: 'posts', pathMatch: 'full' },
   { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule' },
-  { path: 'posts', loadChildren: './posts/posts.module#PostsPageModule', canLoad: [AuthGuard] }
+  {
+    path: 'posts',
+    loadChildren: './posts/posts.module#PostsPageModule',
+    canLoad: [AuthGuard]
+  },
+  {
+    path: 'user',
+    children: [
+      {
+        path: '',
+        loadChildren: './user/user.module#UserPageModule',
+        canLoad: [AuthGuard]
+      },
+      {
+        path: 'edit/:userId',
+        loadChildren: './user/edit-user/edit-user.module#EditUserPageModule'
+      }
+    ]
+  }
 
-  // { path: 'myposts', loadChildren: './posts/myposts/myposts.module#MypostsPageModule' },
-  // { path: 'discover', loadChildren: './posts/discover/discover.module#DiscoverPageModule' },
-  // { path: 'new-post', loadChildren: './posts/myposts/new-post/new-post.module#NewPostPageModule' },
-  // { path: 'edit-post', loadChildren: './posts/myposts/edit-post/edit-post.module#EditPostPageModule' },
-  // { path: 'post-detail', loadChildren: './posts/discover/post-detail/post-detail.module#PostDetailPageModule' }
 ];
 
 @NgModule({

@@ -1,15 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from '../user/user.service';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
-  private _userId = 'u1';
+  private _userId;
   private _userIsAuth = false;
 
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private userService: UserService) {}
 
   get userIsAuth() {
     return this._userIsAuth;
@@ -19,7 +24,9 @@ export class AuthService {
     return this._userId;
   }
 
-  login() {
+  login(userId: string) {
+    console.log('login() auth');
+    this._userId = userId;
     this._userIsAuth = true;
   }
 
