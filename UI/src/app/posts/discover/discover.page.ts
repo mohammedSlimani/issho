@@ -3,6 +3,7 @@ import { Post } from '../post.model';
 import { PostService } from '../post.service';
 import { MenuController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-discover',

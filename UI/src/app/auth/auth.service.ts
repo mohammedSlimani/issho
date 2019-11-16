@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 })
 
 export class AuthService {
-  private _userId;
+  private _userId = 'u1';
   private _userIsAuth = true;
 
 

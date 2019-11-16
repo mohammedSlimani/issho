@@ -8,14 +8,12 @@
 
     <ion-content>
       <ion-list>
-        
         <ion-menu-toggle>
-          <ion-item lines="none" routerLink="/user">
+          <ion-item lines="none" button (click)="onMyAccount()">
             <ion-icon name="person" slot="start"></ion-icon>
             <ion-label>My Account</ion-label>
           </ion-item>
         </ion-menu-toggle>
-        
         <ion-menu-toggle>
           <ion-item lines="none" button (click)="onLogout()">
             <ion-icon name="exit" slot="start"></ion-icon>
