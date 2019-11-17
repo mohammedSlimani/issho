@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Booking } from './booking.model';
+import { Booking } from '../models/booking.model';
 import { Subscription } from 'rxjs';
 import { BookingService } from './booking.service';
 import { AuthService } from '../auth/auth.service';

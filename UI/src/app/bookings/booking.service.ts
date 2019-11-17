@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Booking } from './booking.model';
+import { Booking } from '../models/booking.model';
 import { Crud } from '../crud';
 import { BehaviorSubject } from 'rxjs';
 import { take, delay, tap, map } from 'rxjs/operators';

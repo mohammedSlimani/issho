@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Post } from './post.model';
+import { Post } from '../models/post.model';
 import { AuthService } from '../auth/auth.service';
 import { take, map, tap, delay } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';

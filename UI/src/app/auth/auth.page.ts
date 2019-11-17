@@ -5,7 +5,7 @@ import { LoadingController } from '@ionic/angular';
 import { UserService } from '../user/user.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { User } from '../user/user.model';
+import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-auth',
@@ -18,8 +18,8 @@ export class AuthPage implements OnInit, OnDestroy {
   exists = false;
 
   form: FormGroup;
-  userSub: Subscription;
   user: User;
+  userSub: Subscription;
 
   constructor(
     private authService: AuthService,

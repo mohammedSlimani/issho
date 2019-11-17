@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Post } from '../post.model';
+import { Post } from '../../models/post.model';
 import { PostService } from '../post.service';
 import { MenuController } from '@ionic/angular';
 import { Subscription } from 'rxjs';

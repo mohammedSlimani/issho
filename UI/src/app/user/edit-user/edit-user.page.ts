@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
-import { User } from '../user.model';
+import { User } from '../../models/user.model';
 import { LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
@@ -26,6 +26,7 @@ export class EditUserPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    // init the form
     this.userService.getUser(this.authService.userId).subscribe(user => {
       this.form = new FormGroup({
         name: new FormControl(user.name, {

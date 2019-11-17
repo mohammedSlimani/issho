@@ -4,7 +4,7 @@ import { PostService } from '../../post.service';
 import { LoadingController, NavController } from '@ionic/angular';
 import { Router, Route, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Post } from '../../post.model';
+import { Post } from '../../../models/post.model';
 
 @Component({
   selector: 'app-edit-post',

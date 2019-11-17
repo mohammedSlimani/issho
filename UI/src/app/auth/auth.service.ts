@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { UserService } from '../user/user.service';
-import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +9,7 @@ export class AuthService {
   private _userIsAuth = true;
 
 
-  constructor(
-    private router: Router,
-    private userService: UserService) {}
+  constructor() {}
 
   get userIsAuth() {
     return this._userIsAuth;

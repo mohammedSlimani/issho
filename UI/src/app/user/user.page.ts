@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { User } from './user.model';
+import { User } from '../models/user.model';
 import { UserService } from './user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
@@ -12,7 +12,7 @@ import { NavController } from '@ionic/angular';
 })
 export class UserPage implements OnInit, OnDestroy {
 
-  user: User;
+  user: User; // the visited profile
   userSub: Subscription;
 
   constructor(
@@ -23,7 +23,9 @@ export class UserPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    // since the url: user/:userId
     this.route.paramMap.subscribe( paramMap => {
+      // if empty
       if (!paramMap.has('userId')) {
         this.navCtl.navigateBack('/posts/tabs/discover');
         return;
