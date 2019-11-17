@@ -35,7 +35,7 @@ export class UserService implements Crud<User[]> {
       take(1),
       delay(1000),
       tap(users => {
-        const updatedId = users.findIndex(usr => usr.id === usr.id);
+        const updatedId = users.findIndex(usr => usr.id === user.id);
         const updatedUsers = [...users];
         updatedUsers[updatedId] = user;
         this._users.next(updatedUsers);

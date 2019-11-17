@@ -8,8 +8,7 @@ export class Post {
         public imgUrl: string,
         public userId: string,
         public date: Date,
-        public loc: string = 'Rabat',
-        public goin: number = 86
+        public loc: string = 'Rabat'
     ) {}
 }
 

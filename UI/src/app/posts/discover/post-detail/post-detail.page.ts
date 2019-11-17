@@ -4,6 +4,9 @@ import { Post } from '../../post.model';
 import { NavController } from '@ionic/angular';
 import { PostService } from '../../post.service';
 import { Subscription } from 'rxjs';
+import { BookingService } from 'src/app/bookings/booking.service';
+import { Booking } from 'src/app/bookings/booking.model';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-post-detail',
@@ -13,13 +16,20 @@ import { Subscription } from 'rxjs';
 export class PostDetailPage implements OnInit, OnDestroy {
 
   post: Post;
+  booked =  false;
+  booking: Booking;
+  goin: number;
+
   postSub: Subscription;
+  bookSub: Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private navCtl: NavController,
-    private postService: PostService
+    private postService: PostService,
+    private bookingService: BookingService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -32,6 +42,14 @@ export class PostDetailPage implements OnInit, OnDestroy {
           this.post = post;
         });
 
+        this.bookSub = this.bookingService.getBookingByPost(this.post.id).subscribe( bks => {
+          this.goin = bks.length;
+          this.booked = bks.filter(bk => bk.userId === this.authService.userId).length > 0;
+          if ( this.booked ) {
+            this.booking = bks.filter( bk => bk.userId === this.authService.userId)[0];
+          }
+        });
+
       });
   }
 
@@ -39,10 +57,32 @@ export class PostDetailPage implements OnInit, OnDestroy {
     if(this.postSub) {
       this.postSub.unsubscribe();
     }
+    if(this.bookSub ) {
+      this.bookSub.unsubscribe();
+    }
   }
 
-  onPostParticipate() {
-    this.router.navigateByUrl('/posts/tabs/discover');
+  onUnbook() {
+    this.bookingService.delete(this.booking.id).subscribe( bks => {
+      this.booked = false;
+    });
+  }
+
+  onBook() {
+    if ( this.booked ) {
+      this.onUnbook();
+      return;
+    }
+    console.log('booking added');
+    this.bookingService
+      .create(
+          new Booking(
+              Math.random().toString(),
+              this.post.id,
+              this.authService.userId))
+      .subscribe( bks => {
+        this.booked = true;
+      });
   }
 
 }

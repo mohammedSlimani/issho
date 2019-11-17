@@ -5,7 +5,7 @@ The Face Of the Facebook
 - Organaize events In a very straight forward way.
 - Expolre yourself as individual. Do new stuff everyday.
 
-### User Interface - Ionic/Angular
+### UI progress
 
 - [x] Ionic / Angular course
 - [x] initial pages structure
@@ -13,5 +13,8 @@ The Face Of the Facebook
 - [x] login
 - [x] signup
 - [x] CRUD: user
-- [ ] CRUD: going (bookings)
+- [x] CRUD: going (bookings)
+- [ ] few fixes
+    - [ ] booking page
+    - [ ] more comments & refactoring
 - [ ] Connect NodeJs api
