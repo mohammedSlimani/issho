@@ -1,38 +1,48 @@
 <ion-app>
-    <ion-menu side="start">
+  <!-- MENU -->
+  <ion-menu side="start">
+    
+    <!-- title -->
     <ion-header>
       <ion-toolbar>
         <ion-title>Isho</ion-title>
       </ion-toolbar>
     </ion-header>
 
+    <!-- buttons -->
     <ion-content>
       <ion-list>
+        <!-- Discover -->
         <ion-menu-toggle>
           <ion-item lines="none" button routerLink="/posts/tabs/discover">
             <ion-icon name="search" slot="start"></ion-icon>
             <ion-label>Discover</ion-label>
           </ion-item>
         </ion-menu-toggle>
+        
+        <!-- My Account -->
         <ion-menu-toggle>
           <ion-item lines="none" button (click)="onMyAccount()">
             <ion-icon name="person" slot="start"></ion-icon>
             <ion-label>My Account</ion-label>
           </ion-item>
         </ion-menu-toggle>
-       <ion-menu-toggle>
+        
+        <!-- My Bookings -->
+        <ion-menu-toggle>
           <ion-item lines="none" button (click)="onMyBookings()">
             <ion-icon name="alarm" slot="start"></ion-icon>
             <ion-label>Bookings</ion-label>
           </ion-item>
         </ion-menu-toggle>
+        
+        <!-- Logout -->
         <ion-menu-toggle>
           <ion-item lines="none" button (click)="onLogout()">
             <ion-icon name="exit" slot="start"></ion-icon>
             <ion-label>Logout</ion-label>
           </ion-item>
         </ion-menu-toggle>
-
       </ion-list>
     </ion-content>
   </ion-menu>

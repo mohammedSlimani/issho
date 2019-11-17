@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { PostService } from '../../post.service';
-import { Post } from '../../post.model';
+import { Post } from '../../../models/post.model';
 import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({

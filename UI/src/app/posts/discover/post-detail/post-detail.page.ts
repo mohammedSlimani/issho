@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Post } from '../../post.model';
+import { Post } from '../../../models/post.model';
 import { NavController } from '@ionic/angular';
 import { PostService } from '../../post.service';
 import { Subscription } from 'rxjs';
 import { BookingService } from 'src/app/bookings/booking.service';
-import { Booking } from 'src/app/bookings/booking.model';
+import { Booking } from 'src/app/models/booking.model';
 import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({

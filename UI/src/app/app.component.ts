@@ -30,15 +30,17 @@ export class AppComponent {
     });
   }
 
-
+  // goto my account
   onMyAccount() {
     this.router.navigate( ['/', 'user', this.authService.userId]);
   }
 
+  // goto my bookings
   onMyBookings() {
     this.router.navigateByUrl('/bookings');
   }
 
+  // go out
   onLogout() {
     this.authService.logout();
     this.router.navigateByUrl('/auth');

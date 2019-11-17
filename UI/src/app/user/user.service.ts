@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Crud } from '../crud';
-import { User } from './user.model';
+import { User } from '../models/user.model';
 import { BehaviorSubject } from 'rxjs';
 import { take, delay, tap, map } from 'rxjs/operators';
 
@@ -8,6 +8,8 @@ import { take, delay, tap, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class UserService implements Crud<User[]> {
+
+  // dummy chaning database
   private _users = new BehaviorSubject<User[]>([
     new User('u1', 'm@m', 'mamamama', 'mouhcine'),
     new User('u2', 'm@m2', 'mamamama', 'mouh'),

@@ -16,5 +16,5 @@ The Face Of the Facebook
 - [x] CRUD: going (bookings)
 - [ ] few fixes
     - [x] booking page
-    - [ ] more comments & refactoring
+    - [x] more comments & refactoring
 - [ ] Connect NodeJs api
