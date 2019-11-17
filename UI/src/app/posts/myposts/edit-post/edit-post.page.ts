@@ -69,8 +69,7 @@ export class EditPostPage implements OnInit {
                 this.post.imgUrl,
                 this.post.userId,
                 this.post.date,
-                this.post.loc,
-                this.post.goin) )
+                this.post.loc) )
           .subscribe( () => {
             loadingEl.dismiss();
             this.form.reset();

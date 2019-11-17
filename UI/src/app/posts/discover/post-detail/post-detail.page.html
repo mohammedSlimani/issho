@@ -33,8 +33,11 @@
 
     <ion-row>
       <ion-col size-md="6" offset-md="3">
-        <ion-button color="primary" margin (click)="onPostParticipate()" >
-          Participate
+        <ion-button color="primary" margin (click)="onBook()" *ngIf="!booked">
+          Book
+        </ion-button>
+        <ion-button color="danger" margin (click)="onBook()" *ngIf="booked">
+          unBook
         </ion-button>
       </ion-col>
     </ion-row>

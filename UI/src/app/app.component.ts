@@ -35,6 +35,9 @@ export class AppComponent {
     this.router.navigate( ['/', 'user', this.authService.userId]);
   }
 
+  onMyBookings() {
+    this.router.navigateByUrl('/bookings');
+  }
 
   onLogout() {
     this.authService.logout();

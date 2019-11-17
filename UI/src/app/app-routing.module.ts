@@ -4,7 +4,7 @@ import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'posts', pathMatch: 'full' },
-  { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule' },
+  { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule', canLoad: [AuthGuard] },
   {
     path: 'posts',
     loadChildren: './posts/posts.module#PostsPageModule',
@@ -24,7 +24,8 @@ const routes: Routes = [
         canLoad: [AuthGuard]
       }
     ]
-  }
+  },
+  { path: 'bookings', loadChildren: './bookings/bookings.module#BookingsPageModule' }
 ];
 
 @NgModule({
