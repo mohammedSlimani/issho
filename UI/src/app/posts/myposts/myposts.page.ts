@@ -60,7 +60,6 @@ export class MypostsPage implements OnInit, OnDestroy {
           .subscribe( () => {
             loadingEl.dismiss();
             console.log('onPostDelete()');
-            //this.router.navigateByUrl('/posts/tabs/myposts');
           });
       });
   }

@@ -9,7 +9,9 @@ import { PostService } from '../posts/post.service';
   providedIn: 'root'
 })
 export class BookingService implements Crud<Booking[]> {
-  private _bookings = new BehaviorSubject<Booking[]>( [] );
+  private _bookings = new BehaviorSubject<Booking[]>( [
+    new Booking('b1', '11', 'u1')
+  ] );
 
   constructor(
     private postService: PostService

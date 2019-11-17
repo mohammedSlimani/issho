@@ -25,7 +25,7 @@ const routes: Routes = [
       }
     ]
   },
-  { path: 'bookings', loadChildren: './bookings/bookings.module#BookingsPageModule' }
+  { path: 'bookings', loadChildren: './bookings/bookings.module#BookingsPageModule', canLoad:[AuthGuard] }
 ];
 
 @NgModule({

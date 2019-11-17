@@ -9,6 +9,12 @@
     <ion-content>
       <ion-list>
         <ion-menu-toggle>
+          <ion-item lines="none" button routerLink="/posts/tabs/discover">
+            <ion-icon name="search" slot="start"></ion-icon>
+            <ion-label>Discover</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
           <ion-item lines="none" button (click)="onMyAccount()">
             <ion-icon name="person" slot="start"></ion-icon>
             <ion-label>My Account</ion-label>

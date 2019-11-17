@@ -95,7 +95,6 @@ export class PostService implements Crud<Post[]> {
       delay(1000),
       tap(posts => {
         const updatedPosts = [...posts];
-        updatedPosts.filter(p => p.id === postId);
         this._posts.next(updatedPosts.filter(p => p.id !== postId));
       })
     );
