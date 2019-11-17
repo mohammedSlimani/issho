@@ -21,7 +21,6 @@ export class DiscoverPage implements OnInit, OnDestroy {
 
   constructor(
     private postService: PostService,
-    private menuCtl: MenuController,
     private bookingService: BookingService
   ) {}
 
@@ -48,9 +47,5 @@ export class DiscoverPage implements OnInit, OnDestroy {
     if( this.bookSub) {
       this.bookSub.unsubscribe();
     }
-  }
-
-  onOpenMenu() {
-    this.menuCtl.toggle();
   }
 }
