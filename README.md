@@ -14,7 +14,9 @@ The Face Of the Facebook
 - [x] signup
 - [x] CRUD: user
 - [x] CRUD: going (bookings)
-- [ ] few fixes
+- [x] few fixes
     - [x] booking page
     - [x] more comments & refactoring
+- [ ] Preparing for Http calls
+    - [ ] a Demo with firebase
 - [ ] Connect NodeJs api
