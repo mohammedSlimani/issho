@@ -20,6 +20,11 @@
 - [x] few fixes
     - [x] booking page
     - [x] more comments & refactoring
-- [ ] Preparing for Http calls
-    - [ ] a Demo with firebase
+- [x] Preparing for Http calls ( Firebase )
+    - [x] export posts
+    - [x] export bookings
+- [ ] Managing Users
+    - [ ] Authentication (Signup / Signin)
+    - [ ] export users
 - [ ] Connect NodeJs api
+
