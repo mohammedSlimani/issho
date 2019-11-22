@@ -2,57 +2,112 @@ import { Injectable } from '@angular/core';
 import { Booking } from '../models/booking.model';
 import { Crud } from '../crud';
 import { BehaviorSubject } from 'rxjs';
-import { take, delay, tap, map } from 'rxjs/operators';
+import { take, delay, tap, map, switchMap } from 'rxjs/operators';
 import { PostService } from '../posts/post.service';
+import { HttpClient } from '@angular/common/http';
+
+
+interface BookingData {
+  id: string;
+  postId: string;
+  userId: string;
+}
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookingService implements Crud<Booking[]> {
-  private _bookings = new BehaviorSubject<Booking[]>( [
-    new Booking('b1', '11', 'u1')
-  ] );
+  private _bookings = new BehaviorSubject<Booking[]>( [] );
 
   constructor(
-    private postService: PostService
+    private postService: PostService,
+    private http: HttpClient
   ) {}
 
-  create(booking: Booking) {
-    return this.read().pipe(
-      take(1),
-      delay(500),
-      tap(bookings => {
-        this._bookings.next(bookings.concat(booking));
-      })
-    );
-  }
-
-  read() {
+  get bookings() {
     return this._bookings.asObservable();
   }
 
+  create(booking: Booking) {
+    let generatedId: string;
+    return this.http
+      .post<{ name: string }>('https://issho-7539b.firebaseio.com/bookings.json', {
+        ...booking,
+        id: null
+      })
+      .pipe(
+        switchMap(resData => {
+          generatedId = resData.name;
+          return this.bookings;
+        }),
+        take(1),
+        tap(posts => {
+          booking.id = generatedId;
+          this._bookings.next(posts.concat(booking));
+        })
+      );
+  }
+
+  read() {
+    return this.http
+      .get<{ [key: string]: BookingData }>(
+        'https://issho-7539b.firebaseio.com/bookings.json'
+      )
+      .pipe(
+        map(resData => {
+          const bookings = [];
+          for (const key in resData) {
+            if (resData.hasOwnProperty(key)) {
+              bookings.push(
+                new Booking(
+                  key,
+                  resData[key].postId,
+                  resData[key].userId
+                )
+              );
+            }
+          }
+          return bookings;
+        }),
+        tap(bookings => {
+          this._bookings.next(bookings);
+        })
+      );
+  }
+
   update(booking: Booking) {
-    return this.read().pipe(
+    let updatedBookings: Booking[];
+    return this.bookings.pipe(
       take(1),
-      delay(1000),
-      tap(bookings => {
-        const updatedId = bookings.findIndex(bk => bk.id === booking.id);
-        const updatedBookings = [...bookings];
+      switchMap(bookings => {
+        const updatedId = bookings.findIndex(pl => pl.id === booking.id);
+        updatedBookings = [...bookings];
         updatedBookings[updatedId] = booking;
+
+        return this.http.put(
+          `https://issho-7539b.firebaseio.com/bookings/${booking.id}.json`,
+          { ...updatedBookings[updatedId], id: null }
+        );
+      }),
+      tap(() => {
         this._bookings.next(updatedBookings);
       })
     );
   }
 
   delete(bookingId: string) {
-    return this.read().pipe(
-      take(1),
-      delay(1000),
-      tap(bookings => {
-        const updatedBookings = [...bookings];
-        this._bookings.next(updatedBookings.filter(bk => bk.id !== bookingId));
-      })
-    );
+    return this.http
+      .delete(`https://issho-7539b.firebaseio.com/bookings/${bookingId}.json`)
+      .pipe(
+        switchMap(() => {
+          return this.bookings;
+        }),
+        take(1),
+        tap(bookings => {
+          this._bookings.next(bookings.filter(p => p.id !== bookingId));
+        })
+      );
   }
 
   getBookingByUser(userId: string) {

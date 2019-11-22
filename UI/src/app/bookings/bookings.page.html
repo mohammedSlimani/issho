@@ -9,10 +9,15 @@
 
 <ion-content>
 
-  <ion-grid>
+  <div text-center *ngIf="isLoading">
+      <ion-spinner></ion-spinner>
+    </div>
+  
+
+  <ion-grid *ngIf="!isLoading">
     <ion-row>
       <ion-col size-md="6" offset-md="3">
-        <ion-item-sliding  *ngFor="let bk of myBookings" #slidingItem>
+        <ion-item-sliding  *ngFor="let bk of myBookings" #slidingItem >
               <ion-item detail>
                 <ion-label>
                   <h1>{{bookedPost[bk.id].title}}</h1>

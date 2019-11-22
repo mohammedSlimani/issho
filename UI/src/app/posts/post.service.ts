@@ -1,114 +1,137 @@
 import { Injectable } from '@angular/core';
 import { Post } from '../models/post.model';
-import { AuthService } from '../auth/auth.service';
-import { take, map, tap, delay } from 'rxjs/operators';
+import { take, map, tap, delay, switchMap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { Crud } from '../crud';
+import { HttpClient } from '@angular/common/http';
+
+interface PostData {
+  id: string;
+  title: string;
+  des: string;
+  imgUrl: string;
+  userId: string;
+  date: Date;
+  loc: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService implements Crud<Post[]> {
-  private _posts = new BehaviorSubject<Post[]>([
-    new Post(
-      '11',
-      'Practice Arabic and meet new friends from all over the world!',
-      'des1',
-      'https://upload.wikimedia.org/wikipedia/commons/0/01/San_Francisco_with_two_bridges_and_the_fog.jpg',
-      'u1',
-      new Date('2019-10-5')
-    ),
-    new Post(
-      '12',
-      'Workshop méditation paix intérieure',
-      'des2',
-      'https://upload.wikimedia.org/wikipedia/commons/0/01/San_Francisco_with_two_bridges_and_the_fog.jpg',
-      'u1',
-      new Date('2019-10-5')
-    ),
-    new Post(
-      '13',
-      'The Voice / Public speaking training Casablanca',
-      'des3',
-      'https://upload.wikimedia.org/wikipedia/commons/0/01/San_Francisco_with_two_bridges_and_the_fog.jpg',
-      'u1',
-      new Date('2019-10-5')
-    ),
-    new Post(
-      '14',
-      'Workout session Hilton',
-      'des4',
-      'https://upload.wikimedia.org/wikipedia/commons/0/01/San_Francisco_with_two_bridges_and_the_fog.jpg',
-      'u2',
-      new Date('2019-10-5')
-    ),
-    new Post(
-      '15',
-      'Lasse9 compta',
-      'des5',
-      'https://upload.wikimedia.org/wikipedia/commons/0/01/San_Francisco_with_two_bridges_and_the_fog.jpg',
-      'u3',
-      new Date('2019-10-5')
-    ),
-    new Post(
-      '16',
-      'Olympiades Ensias v6',
-      'des6',
-      'https://upload.wikimedia.org/wikipedia/commons/0/01/San_Francisco_with_two_bridges_and_the_fog.jpg',
-      'u3',
-      new Date('2019-10-5')
-    )
-  ]);
+  private _posts = new BehaviorSubject<Post[]>([]);
 
-  constructor(private authService: AuthService) {}
+  constructor(private http: HttpClient) {}
 
-  create(post: Post) {
-    return this.read().pipe(
-      take(1),
-      delay(1000),
-      tap(posts => {
-        this._posts.next(posts.concat(post));
-      })
-    );
-  }
-
-  read() {
+  get posts() {
     return this._posts.asObservable();
   }
 
+  create(post: Post) {
+    let generatedId: string;
+    return this.http
+      .post<{ name: string }>('https://issho-7539b.firebaseio.com/posts.json', {
+        ...post,
+        id: null
+      })
+      .pipe(
+        switchMap(resData => {
+          generatedId = resData.name;
+          return this.posts;
+        }),
+        take(1),
+        tap(posts => {
+          post.id = generatedId;
+          this._posts.next(posts.concat(post));
+        })
+      );
+  }
+
+  read() {
+    return this.http
+      .get<{ [key: string]: PostData }>(
+        'https://issho-7539b.firebaseio.com/posts.json'
+      )
+      .pipe(
+        map(resData => {
+          const posts = [];
+          for (const key in resData) {
+            if (resData.hasOwnProperty(key)) {
+              posts.push(
+                new Post(
+                  key,
+                  resData[key].title,
+                  resData[key].des,
+                  resData[key].imgUrl,
+                  resData[key].userId,
+                  new Date(resData[key].date),
+                  resData[key].loc
+                )
+              );
+            }
+          }
+          return posts;
+        }),
+        tap(posts => {
+          this._posts.next(posts);
+        })
+      );
+  }
+
   update(post: Post) {
-    return this.read().pipe(
+    let updatedPosts: Post[];
+    return this.posts.pipe(
       take(1),
-      delay(1000),
-      tap(posts => {
+      switchMap(posts => {
+
         const updatedId = posts.findIndex(pl => pl.id === post.id);
-        const updatedPosts = [...posts];
+        updatedPosts = [...posts];
         updatedPosts[updatedId] = post;
+
+        return this.http.put(
+          `https://issho-7539b.firebaseio.com/posts/${post.id}.json`,
+          { ...updatedPosts[updatedId], id: null }
+        );
+      }),
+      tap(() => {
         this._posts.next(updatedPosts);
       })
     );
   }
 
   delete(postId: string) {
-    return this.read().pipe(
-      take(1),
-      delay(1000),
-      tap(posts => {
-        const updatedPosts = [...posts];
-        this._posts.next(updatedPosts.filter(p => p.id !== postId));
-      })
-    );
+    return this.http
+      .delete(`https://issho-7539b.firebaseio.com/posts/${postId}.json`)
+      .pipe(
+        switchMap(() => {
+          return this.posts;
+        }),
+        take(1),
+        tap(posts => {
+          this._posts.next(posts.filter(p => p.id !== postId));
+        })
+      );
   }
 
   getPost(postId: string) {
-    return this.read().pipe(
-      take(1),
-      map(posts => {
-        return { ...posts.find(p => p.id === postId) };
-      })
-    );
+    return this.http
+      .get<PostData>(
+        `https://issho-7539b.firebaseio.com/posts/${postId}.json`
+      )
+      .pipe(
+        map(resData => {
+          let post: Post;
+          post = new Post(
+                  postId,
+                  resData.title,
+                  resData.des,
+                  resData.imgUrl,
+                  resData.userId,
+                  new Date(resData.date),
+                  resData.loc
+                );
+          return post;
+        })
+      );
   }
-
-
-
 }

@@ -22,12 +22,23 @@ export class MypostsPage implements OnInit, OnDestroy {
     private postService: PostService,
     private router: Router,
     private authService: AuthService,
-    private loadingCtl: LoadingController) {}
+    private loadingCtl: LoadingController
+  ) {}
 
   ngOnInit() {
-      this.userId = this.authService.userId;
-      this.postSub = this.postService.read().subscribe(posts => {
+    this.userId = this.authService.userId;
+
+    this.isLoading = true;
+    this.postSub = this.postService.posts.subscribe(posts => {
       this.loadedPosts = posts.filter(p => p.userId === this.userId);
+      this.isLoading = false;
+    });
+  }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.postService.read().subscribe(() => {
+      this.isLoading = false;
     });
   }
 
@@ -37,7 +48,7 @@ export class MypostsPage implements OnInit, OnDestroy {
     }
   }
 
-  onPostView(postId: string){
+  onPostView(postId: string) {
     console.log('view ');
     // show modal
   }
@@ -49,19 +60,15 @@ export class MypostsPage implements OnInit, OnDestroy {
 
   onPostDelete(postId: string, slidingItem: IonItemSliding) {
     slidingItem.close();
-
-    this.isLoading = true;
     this.loadingCtl
       .create({ keyboardClose: true, message: 'deleting post' })
       .then(loadingEl => {
         loadingEl.present();
 
-        this.postService.delete(postId)
-          .subscribe( () => {
-            loadingEl.dismiss();
-            console.log('onPostDelete()');
-          });
+        this.postService.delete(postId).subscribe(() => {
+          loadingEl.dismiss();
+          console.log('onPostDelete()');
+        });
       });
   }
-
 }
