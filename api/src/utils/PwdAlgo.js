@@ -2,17 +2,16 @@ import bcrypt from "bcrypt";
 const saltRounds = 10;
 
 const encrypt = async password => {
-    const hashed = await bcrypt.hashSync(password, saltRounds);
-    return hashed;
+    return await bcrypt.hashSync(password, saltRounds);
 };
 
 const compare = async (password, hashed) => {
     return await bcrypt.compareSync(password, hashed);
 };
 
-const PassAlgo = {
+const PwdAlgo = {
     encrypt,
     compare
 };
 
-export default PassAlgo;
+export default PwdAlgo;

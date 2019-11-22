@@ -5,7 +5,9 @@
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-    "cuid": "^2.1.6"
+    "cuid": "^2.1.6",
+    "bcrypt": "^3.0.6",
+    "email-validator": "^2.0.4"
   },
   "license": "MIT",
   "repository": {
