@@ -10,7 +10,7 @@ export interface Crud<T> {
 
     create(t: any): Observable<T>;
     read(id: string): Observable<T>;
-    update(t: any): Observable<T>;
+    update(t: any): Observable<any>;
     delete(id: string): Observable<T>;
 
 

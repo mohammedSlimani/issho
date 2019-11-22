@@ -10,10 +10,9 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-bookings',
   templateUrl: './bookings.page.html',
-  styleUrls: ['./bookings.page.scss'],
+  styleUrls: ['./bookings.page.scss']
 })
 export class BookingsPage implements OnInit, OnDestroy {
-
   myBookings: Booking[];
   bookedPost = {};
   bookSub: Subscription;
@@ -26,12 +25,14 @@ export class BookingsPage implements OnInit, OnDestroy {
     private postService: PostService,
     private loadingCtl: LoadingController,
     private router: Router
-    ) { }
+  ) {}
 
   ngOnInit() {
-    this.bookSub = this.bookingService.getBookingByUser(this.authService.userId).subscribe( bks => {
-      this.myBookings = bks;
-    });
+    this.bookSub = this.bookingService
+      .getBookingByUser(this.authService.userId)
+      .subscribe(bks => {
+        this.myBookings = bks;
+      });
 
     this.postSub = this.postService.read().subscribe(posts => {
       this.myBookings.forEach(bk => {
@@ -40,31 +41,38 @@ export class BookingsPage implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    if (this.bookSub) {
-      this.bookSub.unsubscribe();
-    }
-    if ( this.postSub) {
-      this.postSub.unsubscribe();
-    }
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.bookingService.read().subscribe(() => {
+      this.isLoading = false;
+    });
+
+    this.isLoading = true;
+    this.postService.read().subscribe(() => {
+      this.isLoading = false;
+    });
   }
 
   onDeleteBooking(bookingId: string, slidingItem: IonItemSliding) {
-
-    this.isLoading = true;
     this.loadingCtl
       .create({ keyboardClose: true, message: 'deleting booking' })
       .then(loadingEl => {
         loadingEl.present();
-
 
         this.bookingService.delete(bookingId).subscribe(() => {
           slidingItem.close();
           loadingEl.dismiss();
           this.myBookings = this.myBookings.filter(bk => bk.id !== bookingId);
         });
-
       });
   }
 
+  ngOnDestroy() {
+    if (this.bookSub) {
+      this.bookSub.unsubscribe();
+    }
+    if (this.postSub) {
+      this.postSub.unsubscribe();
+    }
+  }
 }

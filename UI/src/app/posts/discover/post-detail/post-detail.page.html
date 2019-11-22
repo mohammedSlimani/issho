@@ -9,25 +9,28 @@
 
 <ion-content padding>
 
-  <ion-grid padding>
+  <div text-center *ngIf="isLoading">
+    <ion-spinner></ion-spinner>
+  </div>
+  <ion-grid padding *ngIf="!isLoading">
     <ion-row>
       <ion-col size-md="6" offset-md="3">
-        <ion-img [src]="post.imgUrl"></ion-img>
+        <ion-img [src]="post?.imgUrl"></ion-img>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size-md="6" offset-md="3">
-        <h1>{{post.title}}</h1>
+        <h1>{{post?.title }}</h1>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size-md="6" offset-md="3">
-        <h3>{{post.date | date}}</h3>
+        <h3>{{post?.date | date }}</h3>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size-md="6" offset-md="3">
-        <p>{{post.des}}</p>
+        <p>{{post?.des}}</p>
       </ion-col>
     </ion-row>
 

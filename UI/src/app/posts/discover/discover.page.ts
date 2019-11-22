@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Post } from '../../models/post.model';
 import { PostService } from '../post.service';
-import { MenuController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { AuthService } from 'src/app/auth/auth.service';
 import { BookingService } from 'src/app/bookings/booking.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-discover',
@@ -14,38 +13,54 @@ import { BookingService } from 'src/app/bookings/booking.service';
 export class DiscoverPage implements OnInit, OnDestroy {
   listedPosts: Post[];
   relevantPost: Post;
-  postGoing =  {};
+  postGoing = {};
+  isLoading = false;
 
   bookSub: Subscription;
   postSub: Subscription;
 
   constructor(
     private postService: PostService,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.postSub = this.postService.read().subscribe(posts => {
+    this.postSub = this.postService.posts.subscribe(posts => {
+      this.listedPosts = posts;
       this.relevantPost = posts[0];
-      this.listedPosts = posts.slice(1);
     });
 
-    this.bookSub = this.bookingService.read().subscribe(bks => {
-      this.listedPosts.forEach( p => {
-        this.postGoing[p.id] = bks.filter(bk => bk.postId === p.id).length;
-      });
-      this.postGoing[this.relevantPost.id] = bks.filter(
-        bk => bk.postId === this.relevantPost.id
-      ).length;
+    this.bookSub = this.bookingService.bookings.subscribe(bks => {
+        this.listedPosts.forEach(p => {
+          this.postGoing[p.id] = bks.filter(bk => bk.postId === p.id).length;
+        });
+
+    });
+
+  }
+
+  ionViewWillEnter() {
+    console.log('ionViewWillEnter ');
+    this.isLoading = true;
+    this.postService.read().subscribe( () => {
+      this.isLoading = false;
+    });
+
+    this.isLoading = true;
+    this.bookingService.read().subscribe(() => {
+      this.isLoading = false;
     });
   }
+
 
   ngOnDestroy() {
     if (this.postSub) {
       this.postSub.unsubscribe();
     }
-    if( this.bookSub) {
+    if (this.bookSub) {
       this.bookSub.unsubscribe();
     }
   }
+
 }

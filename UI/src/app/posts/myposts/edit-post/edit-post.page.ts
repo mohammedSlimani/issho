@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PostService } from '../../post.service';
 import { LoadingController, NavController } from '@ionic/angular';
@@ -11,9 +11,10 @@ import { Post } from '../../../models/post.model';
   templateUrl: './edit-post.page.html',
   styleUrls: ['./edit-post.page.scss'],
 })
-export class EditPostPage implements OnInit {
+export class EditPostPage implements OnInit, OnDestroy {
 
   form: FormGroup;
+  postId: string;
   isLoading = false;
   post: Post;
   postSub: Subscription;
@@ -32,7 +33,10 @@ export class EditPostPage implements OnInit {
         this.navCtl.navigateBack('/posts/tabs/myposts');
         return;
       }
-      this.postSub = this.postService.getPost(paramMap.get('postId')).subscribe(post => {
+      this.postId = paramMap.get('postId');
+
+      this.isLoading = true;
+      this.postSub = this.postService.getPost(this.postId).subscribe(post => {
         this.post = post;
         this.form = new FormGroup({
           title: new FormControl(this.post.title, {
@@ -44,8 +48,15 @@ export class EditPostPage implements OnInit {
             validators: [Validators.required, Validators.maxLength(180)]
           })
         });
+        this.isLoading = false;
       });
     });
+  }
+
+  ngOnDestroy() {
+    if ( this.postSub) {
+      this.postSub.unsubscribe();
+    }
   }
 
 
@@ -54,8 +65,6 @@ export class EditPostPage implements OnInit {
       console.log('not valid');
       return;
     }
-
-    this.isLoading = true;
     this.loadingCtl
       .create({ keyboardClose: true, message: 'editing post' })
       .then(loadingEl => {
