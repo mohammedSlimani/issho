@@ -1,0 +1,13 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "dependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/preset-env": "^7.5.5"
+  },
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/mohammedSlimani/issho"
+  }
+}
