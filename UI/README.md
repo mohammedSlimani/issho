@@ -8,6 +8,7 @@
 1. make sure you are in UI/
 2. (terminal) ionic serve
 
+
 ### UI progress
 
 - [x] Ionic / Angular course
@@ -23,9 +24,10 @@
 - [x] Preparing for Http calls ( Firebase )
     - [x] export posts
     - [x] export bookings
-- [ ] Managing Users
+- [x] Managing Users
     - [x] Authentication (Signup / Signin)
     - [x] respect tokenExpiration
-    - [ ] export users
+    - [x] export users
+- [ ] document/ comment / refactor / test
 - [ ] Connect NodeJs api
 

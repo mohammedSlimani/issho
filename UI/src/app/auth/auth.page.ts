@@ -8,6 +8,7 @@ import { Subscription, Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { switchMap } from 'rxjs/operators';
 
 
 
@@ -77,16 +78,26 @@ export class AuthPage implements OnInit, OnDestroy {
             this.form.value.email,
             this.form.value.pwd
           );
+          authObs.subscribe(resData => {
+            console.log(resData);
+          })
         } else {
           // signup
-          authObs = this.authService.signup(
+          this.authService.signup(
             this.form.value.email,
             this.form.value.pwd
-          );
+          ).pipe(
+            switchMap( resData => {
+              console.log(resData);
+              // create user
+              return this.userService.create(
+                new User(resData.localId, resData.email, resData.email)
+              );
+            })
+          ).subscribe( () => {
+            console.log('user created');
+          });
         }
-        authObs.subscribe( resData => {
-          console.log(resData);
-        })
 
         setTimeout(() => {
           this.isLoading = false;

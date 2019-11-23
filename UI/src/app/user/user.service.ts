@@ -2,22 +2,49 @@ import { Injectable } from '@angular/core';
 import { Crud } from '../crud';
 import { User } from '../models/user.model';
 import { BehaviorSubject } from 'rxjs';
-import { take, delay, tap, map } from 'rxjs/operators';
+import { take, delay, tap, map, switchMap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../auth/auth.service';
+
+export interface UserData {
+  id: string;
+  email: string;
+  name: string;
+}
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService implements Crud<User[]> {
-
   // dummy chaning database
   private _users = new BehaviorSubject<User[]>([]);
 
-  constructor() {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
+  get users() {
+    return this._users.asObservable();
+  }
+
+  // po@po.com popopopo
   create(user: User) {
-    return this.read().pipe(
+    return this.authService.userId.pipe(
+      switchMap(userId => {
+        console.log(user);
+        user.id = userId;
+        console.log(user);
+        return this.http.put<{ name: string }>(
+          `https://issho-7539b.firebaseio.com/users/${userId}.json`,
+          {
+            ...user
+          }
+        );
+      }),
+      switchMap(resData => {
+        console.log(resData);
+        return this.users;
+      }),
       take(1),
-      delay(1000),
       tap(users => {
         this._users.next(users.concat(user));
       })
@@ -25,62 +52,69 @@ export class UserService implements Crud<User[]> {
   }
 
   read() {
-    return this._users.asObservable();
+    return this.http
+      .get<{ [key: string]: UserData }>(
+        'https://issho-7539b.firebaseio.com/users.json'
+      )
+      .pipe(
+        map(resData => {
+          const users = [];
+          for (const key in resData) {
+            if (resData.hasOwnProperty(key)) {
+              users.push(new User(key, resData[key].email, resData[key].name));
+            }
+          }
+          return users;
+        }),
+        tap(users => {
+          this._users.next(users);
+        })
+      );
   }
 
   update(user: User) {
-    return this.read().pipe(
+    let updatedUsers: User[];
+    return this.users.pipe(
       take(1),
-      delay(1000),
-      tap(users => {
+      switchMap(users => {
         const updatedId = users.findIndex(usr => usr.id === user.id);
-        const updatedUsers = [...users];
+        updatedUsers = [...users];
         updatedUsers[updatedId] = user;
+
+        return this.http.put(
+          `https://issho-7539b.firebaseio.com/users/${user.id}.json`,
+          { ...updatedUsers[updatedId], id: null }
+        );
+      }),
+      tap(() => {
         this._users.next(updatedUsers);
       })
     );
   }
 
   delete(userId: string) {
-    return this.read().pipe(
-      take(1),
-      delay(1000),
-      tap(users => {
-        const updatedUsers = [...users];
-        updatedUsers.filter(usr => usr.id === userId);
-        this._users.next(updatedUsers.filter(usr => usr.id !== userId));
-      })
-    );
+    return this.http
+      .delete(`https://issho-7539b.firebaseio.com/users/${userId}.json`)
+      .pipe(
+        switchMap(() => {
+          return this.users;
+        }),
+        take(1),
+        tap(users => {
+          this._users.next(users.filter(usr => usr.id !== userId));
+        })
+      );
   }
 
   getUser(userId: string) {
-    return this.read().pipe(
-      take(1),
-      map(users => {
-        return { ...users.find(usr => usr.id === userId) };
-      })
-    );
-  }
-
-  verifyLogin(email: string, pwd: string) {
-    console.log('verifyLogin()');
-    return this.read().pipe(
-      take(1),
-      map(users => {
-        console.log(email, pwd);
-        return { ...users.find(usr => usr.email === email) };
-      })
-    );
-  }
-
-  verifySignup(email: string) {
-    console.log('verifySignup()');
-    return this.read().pipe(
-      take(1),
-      map(users => {
-        console.log(email);
-        return { ...users.find(usr => usr.email === email) };
-      })
-    );
+    return this.http
+      .get<UserData>(`https://issho-7539b.firebaseio.com/users/${userId}.json`)
+      .pipe(
+        map(resData => {
+          let user: User;
+          user = new User(userId, resData.email, resData.name);
+          return user;
+        })
+      );
   }
 }
