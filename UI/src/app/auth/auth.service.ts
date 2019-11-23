@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import { User } from '../models/user.model';
 import { map, tap } from 'rxjs/operators';
+import { UserAuth } from '../models/userAuth';
 
 
 
@@ -22,9 +23,13 @@ export interface AuthResData {
   providedIn: 'root'
 })
 export class AuthService {
-  private _user = new BehaviorSubject<User>(null);
+  private _user = new BehaviorSubject<UserAuth>(null);
 
   constructor(private http: HttpClient) {}
+
+  get user() {
+    return this._user.asObservable();
+  }
 
   get userIsAuth() {
     return this._user.asObservable().pipe(
@@ -53,27 +58,49 @@ export class AuthService {
 
   signup(emal: string, pwd: string) {
     console.log(emal, pwd);
-    return this.http.post<AuthResData>(
-      `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.fireApi}`,
-      { email: emal, password: pwd, returnSecureToken: true }
-    ).pipe(
-      tap(userData => {
-        const expiration = new Date(new Date().getTime() + (+userData.expiresIn * 1000));
-        this._user.next(new User(userData.localId, userData.email, userData.email, userData.idToken, expiration));
-      })
-    );
+    return this.http
+      .post<AuthResData>(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.fireApi}`,
+        { email: emal, password: pwd, returnSecureToken: true }
+      )
+      .pipe(
+        tap(userData => {
+          const expiration = new Date(
+            new Date().getTime() + +userData.expiresIn * 1000
+          );
+          this._user.next(
+            new UserAuth(
+              userData.localId,
+              userData.email,
+              userData.idToken,
+              expiration
+            )
+          );
+        })
+      );
   }
 
   login(emal: string, pwd: string) {
-    return this.http.post<AuthResData>(
-      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.fireApi}`,
-      { email: emal, password: pwd, returnSecureToken: true }
-    ).pipe(
-      tap(userData => {
-        const expiration = new Date(new Date().getTime() + (+userData.expiresIn * 1000));
-        this._user.next(new User(userData.localId, userData.email, userData.email, userData.idToken, expiration));
-      })
-    );
+    return this.http
+      .post<AuthResData>(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.fireApi}`,
+        { email: emal, password: pwd, returnSecureToken: true }
+      )
+      .pipe(
+        tap(userData => {
+          const expiration = new Date(
+            new Date().getTime() + +userData.expiresIn * 1000
+          );
+          this._user.next(
+            new UserAuth(
+              userData.localId,
+              userData.email,
+              userData.idToken,
+              expiration
+            )
+          );
+        })
+      );
   }
 
   logout() {

@@ -14,6 +14,7 @@ export class UserPage implements OnInit, OnDestroy {
 
   user: User; // the visited profile
   userSub: Subscription;
+  isLoading = false;
 
   constructor(
     private userService: UserService,
@@ -31,13 +32,13 @@ export class UserPage implements OnInit, OnDestroy {
         return;
       }
       this.userSub = this.userService.getUser( paramMap.get('userId') ).subscribe( user => {
-        //this.user = user;
+        this.user = user;
       });
     });
   }
 
   ngOnDestroy() {
-    if(this.userSub) {
+    if (this.userSub) {
       this.userSub.unsubscribe();
     }
   }
