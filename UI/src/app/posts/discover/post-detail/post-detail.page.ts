@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 import { BookingService } from 'src/app/bookings/booking.service';
 import { Booking } from 'src/app/models/booking.model';
 import { AuthService } from 'src/app/auth/auth.service';
-import { take } from 'rxjs/operators';
+import { take, switchMap } from 'rxjs/operators';
 
 
 @Component({
@@ -18,7 +18,6 @@ import { take } from 'rxjs/operators';
 export class PostDetailPage implements OnInit, OnDestroy {
   post: Post;
   postId: string;
-  userId: string;
   booked = false;
   booking: Booking;
   goin: number;
@@ -40,9 +39,6 @@ export class PostDetailPage implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.authService.userId.pipe(take(1)).subscribe(userId => {
-      this.userId = userId;
-    });
 
     console.log('ngOnInit');
     this.route.paramMap.subscribe(paramMap => {
@@ -62,17 +58,22 @@ export class PostDetailPage implements OnInit, OnDestroy {
       });
 
 
-      // loading booking count
-      this.isLoading = true;
-      this.bookSub = this.bookingService
-        .getBookingByPost(this.postId)
-        .subscribe(bks => {
+      let myId: string;
+      this.authService.userId.pipe(
+         switchMap(userId => {
+           if (!userId) {
+             throw new Error('no user found');
+           }
+           myId = userId;
+           return this.bookingService.getBookingByPost(this.postId);
+         })
+       ).subscribe( bks => {
           this.goin = bks.length;
           this.booked =
-            bks.filter(bk => bk.userId === this.userId).length > 0;
+            bks.filter(bk => bk.userId === myId).length > 0;
           if (this.booked) {
             this.booking = bks.find(
-              bk => bk.userId === this.userId
+              bk => bk.userId === myId
             );
           }
           this.isLoading = false;
@@ -114,7 +115,7 @@ export class PostDetailPage implements OnInit, OnDestroy {
         new Booking(
           Math.random().toString(),
           this.post.id,
-          this.userId
+          ''
         )
       )
       .subscribe(bks => {

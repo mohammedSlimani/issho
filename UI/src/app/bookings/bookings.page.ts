@@ -6,7 +6,7 @@ import { AuthService } from '../auth/auth.service';
 import { PostService } from '../posts/post.service';
 import { IonItemSliding, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { take } from 'rxjs/operators';
+import { take, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-bookings',
@@ -18,7 +18,6 @@ export class BookingsPage implements OnInit, OnDestroy {
   bookedPost = {};
   bookSub: Subscription;
   postSub: Subscription;
-  userId: string;
   isLoading = false;
 
   constructor(
@@ -30,12 +29,18 @@ export class BookingsPage implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.authService.userId.pipe(take(1)).subscribe(userId => {
-      this.userId = userId;
-    });
 
-    this.bookSub = this.bookingService
-      .getBookingByUser(this.userId)
+    // taking the latest userId
+    this.bookSub = this.authService.userId
+      .pipe(
+        take(1),
+        switchMap(userId => {
+          if (!userId) {
+            throw new Error('no user found');
+          }
+          return this.bookingService.getBookingByUser(userId);
+        })
+      )
       .subscribe(bks => {
         this.myBookings = bks;
       });

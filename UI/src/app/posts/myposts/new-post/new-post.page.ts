@@ -16,7 +16,6 @@ export class NewPostPage implements OnInit {
 
   form: FormGroup;
   isLoading = false;
-  userId: string;
 
   constructor(
     private loadingCtl: LoadingController,
@@ -49,10 +48,6 @@ export class NewPostPage implements OnInit {
       return;
     }
 
-    this.authService.userId.pipe(take(1)).subscribe(userId => {
-      this.userId = userId;
-    });
-
     this.isLoading = true;
     this.loadingCtl
       .create({ keyboardClose: true, message: 'creating post' })
@@ -64,12 +59,11 @@ export class NewPostPage implements OnInit {
             this.form.value.title,
             this.form.value.description,
             'https://upload.wikimedia.org/wikipedia/commons/0/01/San_Francisco_with_two_bridges_and_the_fog.jpg',
-            this.userId,
+            '',
             new Date(this.form.value.date))
             )
           .subscribe( () => {
             loadingEl.dismiss();
-            console.log(this.userId);
             this.form.reset();
             this.router.navigateByUrl('/posts/tabs/myposts');
           });

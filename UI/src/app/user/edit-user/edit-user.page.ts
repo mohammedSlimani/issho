@@ -5,7 +5,7 @@ import { UserService } from '../user.service';
 import { User } from '../../models/user.model';
 import { LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { take } from 'rxjs/operators';
+import { take, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-user',
@@ -17,7 +17,6 @@ export class EditUserPage implements OnInit {
 
   form: FormGroup;
   isLoading: false;
-  userId: string;
 
   constructor(
     private authService: AuthService,
@@ -27,11 +26,14 @@ export class EditUserPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.authService.userId.pipe(take(1)).subscribe(userId => {
-      this.userId = userId;
-    });
-    // init the form
-    this.userService.getUser(this.userId).subscribe(user => {
+    this.authService.userId.pipe(
+      switchMap( userId => {
+        if( !userId ) {
+          throw Error('no user found');
+        }
+        return this.userService.getUser(userId);
+      })
+    ).subscribe(user => {
       this.form = new FormGroup({
         name: new FormControl(user.name, {
           updateOn: 'blur',
@@ -45,7 +47,6 @@ export class EditUserPage implements OnInit {
           updateOn: 'blur'
         })
       });
-      this.userId = this.userId;
     });
   }
 
@@ -61,11 +62,11 @@ export class EditUserPage implements OnInit {
           this.userService
             .update(
               new User(
-                this.userId,
+                '',
                 this.form.value.email,
                 this.form.value.name,
                 'dd',
-                new Date( new Date().getTime() + 60*1000)
+                new Date( new Date().getTime() + 60 * 1000)
               )
             )
             .subscribe( () => {

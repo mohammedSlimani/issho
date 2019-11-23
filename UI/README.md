@@ -25,7 +25,7 @@
     - [x] export bookings
 - [ ] Managing Users
     - [x] Authentication (Signup / Signin)
-    - [ ] respect tokenExpiration
+    - [x] respect tokenExpiration
     - [ ] export users
 - [ ] Connect NodeJs api
 

@@ -38,6 +38,7 @@ export class AuthService {
     );
   }
 
+  // if expired, no userId will be available
   get userId() {
     return this._user.asObservable().pipe(
       map(user => {
