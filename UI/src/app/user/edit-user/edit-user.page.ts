@@ -5,6 +5,7 @@ import { UserService } from '../user.service';
 import { User } from '../../models/user.model';
 import { LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-user',
@@ -26,8 +27,11 @@ export class EditUserPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.authService.userId.pipe(take(1)).subscribe(userId => {
+      this.userId = userId;
+    });
     // init the form
-    this.userService.getUser(this.authService.userId).subscribe(user => {
+    this.userService.getUser(this.userId).subscribe(user => {
       this.form = new FormGroup({
         name: new FormControl(user.name, {
           updateOn: 'blur',
@@ -37,11 +41,11 @@ export class EditUserPage implements OnInit {
           updateOn: 'blur',
           validators: [Validators.required]
         }),
-        pwd: new FormControl(user.pwd, {
+        pwd: new FormControl(null , {
           updateOn: 'blur'
         })
       });
-      this.userId = this.authService.userId;
+      this.userId = this.userId;
     });
   }
 
@@ -57,10 +61,11 @@ export class EditUserPage implements OnInit {
           this.userService
             .update(
               new User(
-                this.authService.userId,
+                this.userId,
                 this.form.value.email,
-                this.form.value.pwd,
-                this.form.value.name
+                this.form.value.name,
+                'dd',
+                new Date( new Date().getTime() + 60*1000)
               )
             )
             .subscribe( () => {

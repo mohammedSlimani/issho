@@ -4,13 +4,14 @@ import { take, map, tap, delay, switchMap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { Crud } from '../crud';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../auth/auth.service';
 
 interface PostData {
   id: string;
   title: string;
   des: string;
-  imgUrl: string;
   userId: string;
+  imgUrl: string;
   date: Date;
   loc: string;
 }
@@ -21,30 +22,40 @@ interface PostData {
 export class PostService implements Crud<Post[]> {
   private _posts = new BehaviorSubject<Post[]>([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   get posts() {
     return this._posts.asObservable();
   }
 
   create(post: Post) {
+    // using the latest userId ( example )
     let generatedId: string;
-    return this.http
-      .post<{ name: string }>('https://issho-7539b.firebaseio.com/posts.json', {
-        ...post,
-        id: null
+    return this.authService.userId.pipe(
+      take(1),
+      switchMap(userId => {
+        if (!userId) {
+          throw new Error('no user found');
+        }
+        post.userId = userId;
+        return this.http.post<{ name: string }>(
+          'https://issho-7539b.firebaseio.com/posts.json',
+          {
+            ...post,
+            id: null
+          }
+        );
+      }),
+      switchMap(resData => {
+        generatedId = resData.name;
+        return this.posts;
+      }),
+      take(1),
+      tap(posts => {
+        post.id = generatedId;
+        this._posts.next(posts.concat(post));
       })
-      .pipe(
-        switchMap(resData => {
-          generatedId = resData.name;
-          return this.posts;
-        }),
-        take(1),
-        tap(posts => {
-          post.id = generatedId;
-          this._posts.next(posts.concat(post));
-        })
-      );
+    );
   }
 
   read() {

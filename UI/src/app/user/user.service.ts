@@ -10,11 +10,7 @@ import { take, delay, tap, map } from 'rxjs/operators';
 export class UserService implements Crud<User[]> {
 
   // dummy chaning database
-  private _users = new BehaviorSubject<User[]>([
-    new User('u1', 'm@m', 'mamamama', 'mouhcine'),
-    new User('u2', 'm@m2', 'mamamama', 'mouh'),
-    new User('u3', 'm@m2', 'mamamama', 'toumi')
-  ]);
+  private _users = new BehaviorSubject<User[]>([]);
 
   constructor() {}
 
@@ -72,7 +68,7 @@ export class UserService implements Crud<User[]> {
       take(1),
       map(users => {
         console.log(email, pwd);
-        return { ...users.find(usr => usr.email === email && usr.pwd === pwd) };
+        return { ...users.find(usr => usr.email === email) };
       })
     );
   }

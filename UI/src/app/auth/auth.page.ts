@@ -1,11 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AuthService } from './auth.service';
+import { AuthService, AuthResData } from './auth.service';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { UserService } from '../user/user.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { User } from '../models/user.model';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+
+
 
 @Component({
   selector: 'app-auth',
@@ -25,7 +29,8 @@ export class AuthPage implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     private loadingCtl: LoadingController,
-    private userService: UserService
+    private userService: UserService,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
@@ -55,95 +60,40 @@ export class AuthPage implements OnInit, OnDestroy {
   }
 
   onProceed() {
-    if (!this.isLogin) {
-      this.onSignup();
-    } else {
-      this.onLogin();
-    }
-  }
-
-  onSignup() {
-    if (!this.form.valid || !this.form.value.name) {
+    if (!this.form.valid) {
       console.log('signup form not valid');
       return;
     }
 
-    // verify
-    this.exists = false;
-    this.userService
-      .verifySignup(this.form.value.email)
-      .subscribe(user => {
-        console.log(user);
-        if (user.id) {
-          console.log('already exists');
-          this.exists = true;
-          return;
+    this.isLoading = true;
+    this.loadingCtl
+      .create({ keyboardClose: true, message: 'loading...' })
+      .then(loadingEl => {
+        loadingEl.present();
+        let authObs: Observable<AuthResData>;
+        if (this.isLogin) {
+          // login
+          authObs = this.authService.login(
+            this.form.value.email,
+            this.form.value.pwd
+          );
+        } else {
+          // signup
+          authObs = this.authService.signup(
+            this.form.value.email,
+            this.form.value.pwd
+          );
         }
-        this.exists = false;
+        authObs.subscribe( resData => {
+          console.log(resData);
+        })
 
-        // create
-        if ( !this.exists ) {
-          this.userService
-          .create(
-            new User(
-              Math.random().toString(),
-              this.form.value.email,
-              this.form.value.pwd,
-              this.form.value.name
-            )
-          ).subscribe(() => {
-            this.exists = true;
-            this.isLoading = true;
-            this.loadingCtl
-              .create({ keyboardClose: true, message: 'signing up' })
-              .then(loadingEl => {
-                loadingEl.present();
-                setTimeout(() => {
-                  this.isLoading = false;
-                  loadingEl.dismiss();
-                  this.form.reset();
-                  this.onSwitchAuthMode();
-                }, 1500);
-              });
-          });
-      }
-      });
-
-  }
-
-  onLogin() {
-    if (!this.form.valid) {
-      console.log('form not valid');
-      return;
-    }
-    this.exists = false;
-    this.userService
-      .verifyLogin(
-        this.form.value.email,
-        this.form.value.pwd)
-      .subscribe(user => {
-        console.log(user);
-        if (!user.id) {
-          console.log('you are not');
-          this.exists = false;
-          return;
-        }
-        this.exists = true;
-
-        // login
-        this.authService.login(user.id);
-        // loading
-        this.isLoading = true;
-        this.loadingCtl
-          .create({ keyboardClose: true, message: 'login in' })
-          .then(loadingEl => {
-            loadingEl.present();
-            setTimeout(() => {
-              this.isLoading = false;
-              loadingEl.dismiss();
-              this.router.navigateByUrl('/posts/tabs/discover');
-            }, 1500);
-          });
+        setTimeout(() => {
+          this.isLoading = false;
+          loadingEl.dismiss();
+          this.router.navigateByUrl('/posts/tabs/discover');
+        }, 1500);
       });
   }
+
 }

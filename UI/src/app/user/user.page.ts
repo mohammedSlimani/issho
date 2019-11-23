@@ -31,7 +31,7 @@ export class UserPage implements OnInit, OnDestroy {
         return;
       }
       this.userSub = this.userService.getUser( paramMap.get('userId') ).subscribe( user => {
-        this.user = user;
+        //this.user = user;
       });
     });
   }

@@ -5,7 +5,7 @@ import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'posts', pathMatch: 'full' },
-  { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule', canLoad: [AuthGuard] },
+  { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule'},
   { path: 'bookings', loadChildren: './bookings/bookings.module#BookingsPageModule', canLoad:[AuthGuard] },
   { path: 'posts', loadChildren: './posts/posts.module#PostsPageModule', canLoad: [AuthGuard]},
   {
