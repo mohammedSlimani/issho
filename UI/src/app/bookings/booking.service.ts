@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { take, delay, tap, map, switchMap } from 'rxjs/operators';
 import { PostService } from '../posts/post.service';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../auth/auth.service';
 
 
 interface BookingData {
@@ -22,7 +23,8 @@ export class BookingService implements Crud<Booking[]> {
 
   constructor(
     private postService: PostService,
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) {}
 
   get bookings() {
@@ -31,12 +33,19 @@ export class BookingService implements Crud<Booking[]> {
 
   create(booking: Booking) {
     let generatedId: string;
-    return this.http
-      .post<{ name: string }>('https://issho-7539b.firebaseio.com/bookings.json', {
-        ...booking,
-        id: null
-      })
-      .pipe(
+    // get the latest userId
+    return this.authService.userId.pipe(
+      take(1),
+      switchMap( userId => {
+        booking.userId = userId;
+        return this.http.post<{ name: string }>(
+          'https://issho-7539b.firebaseio.com/bookings.json',
+          {
+            ...booking,
+            id: null
+          }
+        );
+      }),
         switchMap(resData => {
           generatedId = resData.name;
           return this.bookings;

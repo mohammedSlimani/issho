@@ -20,8 +20,8 @@
         <ion-item-sliding  *ngFor="let bk of myBookings" #slidingItem >
               <ion-item detail>
                 <ion-label>
-                  <h1>{{bookedPost[bk.id].title}}</h1>
-                  <p>{{bookedPost[bk.id].date | date}}</p>
+                  <h1>{{bookedPost[bk.id]?.title}}</h1>
+                  <p>{{bookedPost[bk.id]?.date | date}}</p>
                 </ion-label>
               </ion-item> 
 

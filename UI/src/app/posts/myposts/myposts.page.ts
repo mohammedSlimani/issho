@@ -5,7 +5,7 @@ import { IonItemSliding, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-myposts',
@@ -27,15 +27,24 @@ export class MypostsPage implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.authService.userId.pipe(take(1)).subscribe(userId => {
-      this.userId = userId;
-    });
 
+    // take latest userId
+    let myId: string;
     this.isLoading = true;
-    this.postSub = this.postService.posts.subscribe(posts => {
-      this.loadedPosts = posts.filter(p => p.userId === this.userId);
-      this.isLoading = false;
-    });
+    this.postSub = this.authService.userId
+      .pipe(
+        take(1),
+        switchMap(userId => {
+          if (!userId) {
+            throw Error('no user found');
+          }
+          return this.postService.posts;
+        })
+      )
+      .subscribe(posts => {
+        this.loadedPosts = posts.filter(p => p.userId === myId);
+        this.isLoading = false;
+      });
   }
 
   ionViewWillEnter() {

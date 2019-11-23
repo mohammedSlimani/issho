@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './auth/auth.service';
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +33,9 @@ export class AppComponent {
 
   // goto my account
   onMyAccount() {
-    this.router.navigate( ['/', 'user', this.authService.userId]);
+    this.authService.userId.pipe(take(1)).subscribe( userId => {
+      this.router.navigate( ['/', 'user', userId]);
+    });
   }
 
   // goto my bookings
