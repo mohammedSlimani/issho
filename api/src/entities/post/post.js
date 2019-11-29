@@ -7,27 +7,30 @@ export default function BuildMakePost({Id}) {
                                  imgUrl,
                                  dateAdded = new Date().getTime(),
                                  location,
-                                 approved = false
-                             }){
-        if(!Id.isValidId(id)){
+                                 approved = false,
+                                 usersApproved = [],
+                                 usersPending = [],
+                                 usersRejected = []
+                             }) {
+        if (!Id.isValidId(id)) {
             throw new Error("Post must have a valid ID");
         }
-        if (!Id.isValidId(authorId)){
+        if (!Id.isValidId(authorId)) {
             throw new Error("Author Id Is not valid");
         }
-        if (!title){
+        if (!title) {
             throw new Error("Post Must have a valid ID")
         }
-        if(!des){
+        if (!des) {
             throw new Error("Post must have a des ")
         }
-        if(!imgUrl){
+        if (!imgUrl) {
             throw new Error("Post Must have an Img Url")
         }
-        if(!dateAdded){
+        if (!dateAdded) {
             throw new Error("Post must have a ")
         }
-        if(!location){
+        if (!location) {
             throw new Error("Post must have a location");
         }
 
@@ -35,17 +38,17 @@ export default function BuildMakePost({Id}) {
         approved = true;
 
         return Object.freeze({
-            getId : ( ) => id,
-            getImgUrl: ()=> imgUrl,
-            getAuthorId:()=> authorId,
-            getDes : () => des,
-            getDateAdded : ()=> dateAdded,
-            getLocation: ()=> location,
-            getApproved : ()=> approved,
-            approve : () => {
+            getId: () => id,
+            getImgUrl: () => imgUrl,
+            getAuthorId: () => authorId,
+            getDes: () => des,
+            getDateAdded: () => dateAdded,
+            getLocation: () => location,
+            getApproved: () => approved,
+            approve: () => {
                 approved = true
             },
-            disapprove : ()=>{
+            disapprove: () => {
                 approved = false
             }
         })

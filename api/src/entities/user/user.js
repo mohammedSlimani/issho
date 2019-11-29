@@ -1,3 +1,5 @@
+import post from "../post/post";
+
 const NOIMAGE = "https://www.clipartwiki.com/clipimg/detail/197-1979569_no-profile.png"
 
 export default function BuildMakeUser({Id, crypt, validator}) {
@@ -40,7 +42,8 @@ export default function BuildMakeUser({Id, crypt, validator}) {
                 //We can use this to bad users that misbehave
                 approved = false;
             },
-            getBookings : () => bookings
+            getBookings : () => bookings,
+            getPosts : ( ) => posts
         })
     }
 }
