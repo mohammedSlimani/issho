@@ -9,7 +9,7 @@ export default function BuildMakePost({Id}) {
                                  location,
                                  approved = false,
                                  usersApproved = [],
-                                 usersPending = [],
+                                 usersPended = [],
                                  usersRejected = []
                              }) {
         if (!Id.isValidId(id)) {
@@ -50,7 +50,10 @@ export default function BuildMakePost({Id}) {
             },
             disapprove: () => {
                 approved = false
-            }
+            },
+            getUsersPended : () => usersPended,
+            getUsersApproved : () => usersApproved,
+            getUsersRejected : ()=> usersRejected
         })
     }
 }
