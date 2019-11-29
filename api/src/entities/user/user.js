@@ -8,7 +8,9 @@ export default function BuildMakeUser({Id, crypt, validator}) {
                                        email,
                                        imgUrl = NOIMAGE,
                                        googleId = null,
-                                       approved = false
+                                       approved = false,
+                                       bookings = [], // Post Id that the user booked
+                                       posts = [] // Posts that the user made
                                    }) {
         if (!name) {
             throw new Error("User must have a Name")
@@ -37,7 +39,8 @@ export default function BuildMakeUser({Id, crypt, validator}) {
             disapprove: () => {
                 //We can use this to bad users that misbehave
                 approved = false;
-            }
+            },
+            getBookings : () => bookings
         })
     }
 }
