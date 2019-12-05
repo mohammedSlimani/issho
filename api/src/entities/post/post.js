@@ -74,6 +74,11 @@ export default function BuildMakePost({Id}) {
                 if(!usersRejected.includes(userId)){
                     usersRejected.push(userId)
                 }
+            },
+            unsubscribe : (userId) => {
+                usersApproved = usersApproved.filter(ele => ele === userId);
+                usersRejected = usersRejected.filter(ele => ele === userId);
+                usersPended = usersPended.filter(ele => ele === userId);
             }
         })
     }
