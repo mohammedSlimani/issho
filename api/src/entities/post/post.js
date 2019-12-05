@@ -68,7 +68,7 @@ export default function BuildMakePost({Id}) {
                     usersApproved.push(userId)
                 }
             },
-            rejectUser:(userId) =>{
+            rejectUser: (userId) =>{
                 usersPended = usersPended.filter(ele => ele === userId);
                 usersApproved = usersApproved.filter(ele => ele === userId);
                 if(!usersRejected.includes(userId)){
