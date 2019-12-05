@@ -53,7 +53,33 @@ export default function BuildMakePost({Id}) {
             },
             getUsersPended : () => usersPended,
             getUsersApproved : () => usersApproved,
-            getUsersRejected : ()=> usersRejected
+            getUsersRejected : ()=> usersRejected,
+            subscribeUser : (userId) => {
+                usersApproved = usersApproved.filter(ele => ele === userId);
+                usersRejected = usersRejected.filter(ele => ele === userId);
+                if(!usersPended.includes(userId)){
+                    usersPended.push(userId);
+                }
+            },
+            approveUser : (userId) => {
+                usersPended = usersPended.filter(ele => ele === userId);
+                usersRejected = usersRejected.filter(ele => ele === userId);
+                if(!usersApproved.includes(userId)){
+                    usersApproved.push(userId)
+                }
+            },
+            rejectUser: (userId) =>{
+                usersPended = usersPended.filter(ele => ele === userId);
+                usersApproved = usersApproved.filter(ele => ele === userId);
+                if(!usersRejected.includes(userId)){
+                    usersRejected.push(userId)
+                }
+            },
+            unsubscribeUser : (userId) => {
+                usersApproved = usersApproved.filter(ele => ele === userId);
+                usersRejected = usersRejected.filter(ele => ele === userId);
+                usersPended = usersPended.filter(ele => ele === userId);
+            }
         })
     }
 }
