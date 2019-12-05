@@ -1,6 +1,6 @@
 import makePost from "../../entities/post";
 
-export default function makeAddPost({postDb}){
+export default function makeAddPost({postsDb}){
     return async function addPost(postInfo){
         const post = makePost(postInfo);
 
@@ -8,7 +8,7 @@ export default function makeAddPost({postDb}){
         // if everything is okay
         post.approve();
 
-        return postDb.insert({
+        return postsDb.insert({
             id: post.getId(),
             imgUrl: post.getImgUrl(),
             authorId: post.getAuthorId(),
