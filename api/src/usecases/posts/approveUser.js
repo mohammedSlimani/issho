@@ -20,7 +20,7 @@ export default function makeApproveUser ({usersDb, postsDb}) {
         }
 
         const updatedPost = makePost(existingPost);
-        updatedPost.approve(userId);
+        updatedPost.subscribe(userId);
 
         return  postsDb.update({
             id: updatedPost.getId(),
