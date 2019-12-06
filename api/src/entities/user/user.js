@@ -11,6 +11,7 @@ export default function BuildMakeUser({Id, crypt, validator}) {
                                        imgUrl = NOIMAGE,
                                        googleId = null,
                                        approved = false,
+                                       deleted = false
                                    }) {
         if (!name) {
             throw new Error("User must have a Name")
@@ -36,12 +37,16 @@ export default function BuildMakeUser({Id, crypt, validator}) {
             approve: () => {
                 approved = true;
             },
+            getDeleted : () => deleted
             disapprove: () => {
                 //We can use this to bad users that misbehave
                 approved = false;
             },
             getBookings : () => bookings,
-            getPosts : ( ) => posts
+            getPosts : ( ) => posts,
+            markDeleted: ()=>{
+                deleted = true
+            }
         })
     }
 }
