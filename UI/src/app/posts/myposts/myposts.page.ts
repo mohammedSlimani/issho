@@ -38,6 +38,7 @@ export class MypostsPage implements OnInit, OnDestroy {
           if (!userId) {
             throw Error('no user found');
           }
+          myId = userId;
           return this.postService.posts;
         })
       )

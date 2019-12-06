@@ -31,8 +31,10 @@ export class UserPage implements OnInit, OnDestroy {
         this.navCtl.navigateBack('/posts/tabs/discover');
         return;
       }
+      this.isLoading = true;
       this.userSub = this.userService.getUser( paramMap.get('userId') ).subscribe( user => {
         this.user = user;
+        this.isLoading = false;
       });
     });
   }
