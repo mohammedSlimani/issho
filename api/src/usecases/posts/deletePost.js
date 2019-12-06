@@ -1,3 +1,5 @@
+import {makePost} from "../../entities";
+
 export default function makeRemovePost({ postsDb }) {
     return async function removePost({ authorId, id }) {
         if (!id) {
@@ -20,8 +22,21 @@ export default function makeRemovePost({ postsDb }) {
             throw new Error("You dont have the right to delete this post");
         }
 
-        const deleted = await postsDb.remove({ id });
+        const updatedPost = makePost(exist);
+        updatedPost.markDeleted();
 
-        return deleted.result;
+        return postsDb.update({
+            id: updatedPost.getId(),
+            imgUrl: updatedPost.getImgUrl(),
+            authorId: updatedPost.getAuthorId(),
+            des: updatedPost.getDes(),
+            dateAdded: updatedPost.getDateAdded(),
+            location: updatedPost.getLocation(),
+            approved: updatedPost.getApproved(),
+            usersPended: updatedPost.getUsersPended(),
+            usersApproved : updatedPost.getUsersApproved(),
+            usersRejected: updatedPost.getUsersRejected(),
+            deleted: updatedPost.getDeleted()
+        })
     };
 }

@@ -30,7 +30,8 @@ export default function makeEditPost({postsDb, usersDb}) {
             approved: updatedPost.getApproved(),
             usersPended: updatedPost.getUsersPended(),
             usersApproved : updatedPost.getUsersApproved(),
-            usersRejected: updatedPost.getUsersRejected()
+            usersRejected: updatedPost.getUsersRejected(),
+            deleted: updatedPost.getDeleted()
         })
 
     }

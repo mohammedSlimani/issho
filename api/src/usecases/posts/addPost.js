@@ -18,7 +18,8 @@ export default function makeAddPost({postsDb}){
             approved: post.getApproved(),
             usersPended: post.getUsersPended(),
             usersApproved : post.getUsersApproved(),
-            usersRejected: post.getUsersRejected()
+            usersRejected: post.getUsersRejected(),
+            deleted: post.getDeleted()
         })
     }
 }
