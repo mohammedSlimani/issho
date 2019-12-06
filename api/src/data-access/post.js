@@ -4,11 +4,8 @@ export default function makePostsDb (){
         search,
         update,
         insert,
-        remove
     });
-    async function remove(){
-        throw new Error('To be implemented!')
-    }
+   // we dont really need the delete method as we are going to mark the deleted posts for data usage
     async function findById(){
         throw new Error('To be implemented!')
     }
