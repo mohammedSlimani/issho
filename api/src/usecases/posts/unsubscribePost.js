@@ -1,4 +1,4 @@
-import makePost from "../../entities/post";
+import {makePost} from "../../entities";
 
 export default function makeUnsubscribeUser ({usersDb, postsDb}) {
     return async function unsubscribeUser({postId, userId}){

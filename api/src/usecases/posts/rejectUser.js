@@ -1,4 +1,4 @@
-import makePost from "../../entities/post";
+import {makePost} from "../../entities";
 
 export default function makeRejectUser ({usersDb, postsDb}) {
     return async function rejectUser({postId, userId}){

@@ -1,4 +1,4 @@
-import makePost from "../../entities/post";
+import {makePost} from "../../entities";
 
 export default function makeAddPost({postsDb}){
     return async function addPost(postInfo){
