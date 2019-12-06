@@ -94,7 +94,6 @@ export class PostService implements Crud<Post[]> {
     return this.posts.pipe(
       take(1),
       switchMap(posts => {
-
         const updatedId = posts.findIndex(pl => pl.id === post.id);
         updatedPosts = [...posts];
         updatedPosts[updatedId] = post;
