@@ -1,11 +1,11 @@
-export default function makeGoogleOuathController ({editUser}) {
+export default function makeGoogleOuathController ({googleOuath}) {
     return async function googleOuathController(httpRequest){
         const headers = {
             "Content-Type": "multipart/form-data"
         };
         try {
             const {email, googleId, name, image} = httpRequest.body;
-            const user = await editUser({email, googleId, name, image});
+            const user = await googleOuath({email, googleId, name, image});
 
             return {
                 headers,

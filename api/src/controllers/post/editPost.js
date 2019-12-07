@@ -1,5 +1,5 @@
-export default function makeSubscribeUserController({editPost}) {
-    return async function subscribeUserController(httpRequest){
+export default function makeEditPostController({editPost}) {
+    return async function editPostController(httpRequest){
         const headers = {
             "Content-Type": "multipart/form-data"
         };
