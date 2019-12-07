@@ -21,13 +21,8 @@ public class BookingService extends ElasticCrud{
     public String getByPost(String postId) throws IOException {
         SearchRequest searchRequest = new SearchRequest(this.index);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
-        BoolQueryBuilder query = QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termsQuery("postId", postId));
-
-        searchSourceBuilder.query(query);
+        searchSourceBuilder.query(QueryBuilders.matchPhraseQuery("postId", postId));
         searchRequest.source(searchSourceBuilder);
-
         SearchHits searchHits = this.client.search(searchRequest, RequestOptions.DEFAULT).getHits();
         List<String> hits = new ArrayList<String>();
         for (SearchHit hit : searchHits) {
@@ -40,13 +35,8 @@ public class BookingService extends ElasticCrud{
     public String getByUser(String userId) throws IOException {
         SearchRequest searchRequest = new SearchRequest(this.index);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
-        BoolQueryBuilder query = QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termsQuery("userId", userId));
-
-        searchSourceBuilder.query(query);
+        searchSourceBuilder.query(QueryBuilders.matchPhraseQuery("userId", userId));
         searchRequest.source(searchSourceBuilder);
-
         SearchHits searchHits = this.client.search(searchRequest, RequestOptions.DEFAULT).getHits();
         List<String> hits = new ArrayList<String>();
         for (SearchHit hit : searchHits) {
