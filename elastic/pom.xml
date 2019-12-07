@@ -14,6 +14,10 @@
         <version>2.2.1.RELEASE</version>
     </parent>
 
+    <properties>
+        <elasticsearch.version>7.4.0</elasticsearch.version>
+    </properties>
+
     <dependencies>
         <!-- Springboot -->
         <dependency>
