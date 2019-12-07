@@ -1,15 +1,18 @@
-export default function makePostsDb (){
+export default function makeUsersDb (){
     return Object.freeze({
         findById,
-        search,
+        findByEmail
         update,
         insert,
+        remove
     });
-   // we dont really need the delete method as we are going to mark the deleted posts for data usage
+    async function remove(){
+        throw new Error('To be implemented!')
+    }
     async function findById(){
         throw new Error('To be implemented!')
     }
-    async function search(){
+    async function findByEmail(){
         throw new Error('To be implemented!')
     }
     async function insert(){

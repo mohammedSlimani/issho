@@ -1,4 +1,4 @@
-import makePost from "../../entities/post";
+import {makePost} from "../../entities";
 
 export default function makeRejectUser ({usersDb, postsDb}) {
     return async function rejectUser({postId, userId}){
@@ -32,7 +32,8 @@ export default function makeRejectUser ({usersDb, postsDb}) {
             approved: updatedPost.getApproved(),
             usersPended: updatedPost.getUsersPended(),
             usersApproved : updatedPost.getUsersApproved(),
-            usersRejected: updatedPost.getUsersRejected()
+            usersRejected: updatedPost.getUsersRejected(),
+            deleted: updatedPost.getDeleted()
         })
     }
 }

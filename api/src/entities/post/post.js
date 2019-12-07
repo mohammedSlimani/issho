@@ -10,7 +10,8 @@ export default function BuildMakePost({Id}) {
                                  approved = false,
                                  usersApproved = [],
                                  usersPended = [],
-                                 usersRejected = []
+                                 usersRejected = [],
+                                 deleted = false
                              }) {
         if (!Id.isValidId(id)) {
             throw new Error("Post must have a valid ID");
@@ -54,6 +55,10 @@ export default function BuildMakePost({Id}) {
             getUsersPended : () => usersPended,
             getUsersApproved : () => usersApproved,
             getUsersRejected : ()=> usersRejected,
+            getDeleted : ()=>deleted,
+            markDeleted: ()=> {
+                deleted = true
+            },
             subscribeUser : (userId) => {
                 usersApproved = usersApproved.filter(ele => ele === userId);
                 usersRejected = usersRejected.filter(ele => ele === userId);
