@@ -66,13 +66,6 @@ public abstract class ElasticCrud {
         this.client.close();
     }
 
-    public String getById(String id) throws IOException {
-        GetRequest getRequest = new GetRequest(
-                this.index,
-                id);
-        return this.client.get(getRequest, RequestOptions.DEFAULT).getSource().toString();
-    }
-
     public void create(String object) throws IOException {
         IndexRequest request = new IndexRequest(this.index);
         request.source(object, XContentType.JSON);
@@ -105,6 +98,15 @@ public abstract class ElasticCrud {
                 this.index,
                 id);
         this.client.delete(request, RequestOptions.DEFAULT);
+    }
+
+
+
+    public String getById(String id) throws IOException {
+        GetRequest getRequest = new GetRequest(
+                this.index,
+                id);
+        return this.client.get(getRequest, RequestOptions.DEFAULT).getSource().toString();
     }
 
 
