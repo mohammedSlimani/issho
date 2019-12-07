@@ -87,9 +87,9 @@ public abstract class ElasticCrud {
     }
 
     public void update(String id, String object) throws IOException {
-        UpdateRequest request = new UpdateRequest(this.index, id);
-        request.doc(object, XContentType.JSON);
-        this.client.update(request, RequestOptions.DEFAULT);
+        IndexRequest request = new IndexRequest(this.index).id(id);
+        request.source(object, XContentType.JSON);
+        this.client.index(request, RequestOptions.DEFAULT);
     }
 
 
@@ -106,7 +106,7 @@ public abstract class ElasticCrud {
         GetRequest getRequest = new GetRequest(
                 this.index,
                 id);
-        return this.client.get(getRequest, RequestOptions.DEFAULT).getSource().toString();
+        return this.client.get(getRequest, RequestOptions.DEFAULT).getSourceAsString();
     }
 
 

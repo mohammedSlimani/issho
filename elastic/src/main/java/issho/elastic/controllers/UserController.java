@@ -1,18 +1,25 @@
 package issho.elastic.controllers;
 
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import issho.elastic.services.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 public class UserController {
 
 
     UserService userService = new UserService("users");
+
+    //----------------------
+    //----------GET------------
+    //----------------------
 
     @GetMapping("/users/all")
     public String getAll() throws IOException {
@@ -33,6 +40,25 @@ public class UserController {
     public String getByName(@RequestParam(name = "name") String name) throws IOException {
         return  userService.getByName(name);
     }
+
+
+    //----------------------
+    //----------POST------------
+    //----------------------
+
+    @PostMapping("/users/create")
+    public void create(@RequestBody String user) throws IOException {
+        userService.create(user);
+    }
+
+
+    @PostMapping("/users/update")
+    public void update(@RequestBody String object) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(object);
+        userService.update(rootNode.path("id").toString().replace("\"", ""), rootNode.toString());
+    }
+
 
 
 
