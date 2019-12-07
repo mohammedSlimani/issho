@@ -23,17 +23,17 @@ public class UserService extends ElasticCrud {
 
         SearchRequest searchRequest = new SearchRequest(this.index);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
-        BoolQueryBuilder query = QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termsQuery("email", email));
-
-        searchSourceBuilder.query(query);
+        searchSourceBuilder.query(QueryBuilders.matchPhraseQuery("email", email) );
         searchRequest.source(searchSourceBuilder);
 
         SearchHits searchHits = this.client.search(searchRequest, RequestOptions.DEFAULT).getHits();
+
         List<String> hits = new ArrayList<String>();
         for (SearchHit hit : searchHits) {
             hits.add(hit.getSourceAsString());
+        }
+        if (hits.size() == 0){
+            return "{}";
         }
         return hits.get(0);
     }
@@ -42,17 +42,17 @@ public class UserService extends ElasticCrud {
 
         SearchRequest searchRequest = new SearchRequest(this.index);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
-        BoolQueryBuilder query = QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termsQuery("name", name));
-
-        searchSourceBuilder.query(query);
+        searchSourceBuilder.query(QueryBuilders.matchPhraseQuery("name", name));
         searchRequest.source(searchSourceBuilder);
 
         SearchHits searchHits = this.client.search(searchRequest, RequestOptions.DEFAULT).getHits();
         List<String> hits = new ArrayList<String>();
         for (SearchHit hit : searchHits) {
             hits.add(hit.getSourceAsString());
+        }
+
+        if (hits.size() == 0){
+            return "{}";
         }
         return hits.get(0);
 
