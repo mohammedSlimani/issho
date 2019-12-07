@@ -1,4 +1,9 @@
-/home/mouhcine/Code/git_shit/issho/elastic/src/main/java/issho/elastic/services/PostCrud.java
+/home/mouhcine/Code/git_shit/issho/elastic/src/main/java/issho/elastic/services/PostService.java
+/home/mouhcine/Code/git_shit/issho/elastic/src/main/java/issho/elastic/controllers/PostController.java
+/home/mouhcine/Code/git_shit/issho/elastic/src/main/java/issho/elastic/controllers/UserController.java
 /home/mouhcine/Code/git_shit/issho/elastic/src/main/java/issho/elastic/services/ElasticCrud.java
+/home/mouhcine/Code/git_shit/issho/elastic/src/main/java/issho/elastic/services/BookingService.java
+/home/mouhcine/Code/git_shit/issho/elastic/src/main/java/issho/elastic/services/UserService.java
 /home/mouhcine/Code/git_shit/issho/elastic/src/main/java/issho/elastic/controllers/DemoCtl.java
-/home/mouhcine/Code/git_shit/issho/elastic/src/main/java/issho/elastic/controllers/Application.java
+/home/mouhcine/Code/git_shit/issho/elastic/src/main/java/issho/elastic/Application.java
+/home/mouhcine/Code/git_shit/issho/elastic/src/main/java/issho/elastic/controllers/BookingController.java

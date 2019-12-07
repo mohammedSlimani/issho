@@ -27,29 +27,31 @@ import java.util.List;
 
 public abstract class ElasticCrud {
 
-    String host;
-    Integer port;
+
+    // config to be imported
+    String host = "kafka-course-8169368270.eu-west-1.bonsaisearch.net";
+    Integer port = 443;
+    String user = "mrgm7glbc3";
+    String password = "2wl1bgvk9f";
+
     String index;
-    String user;
-    String password ;
+
     RestHighLevelClient client;
 
 
-    public ElasticCrud(String host, Integer port, String user, String password, String index) {
-        this.host = host;
-        this.port = port;
-        this.user = user;
-        this.password = password;
+    public ElasticCrud(String index) {
         this.index = index;
+        this.Init();
     }
 
 
     public void Init(){
-
+        // credentials
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY,
                 new UsernamePasswordCredentials(this.user, this.password));
 
+        // host:port
         RestClientBuilder builder = RestClient.builder(new HttpHost(this.host, this.port, "https"))
                 .setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
             @Override

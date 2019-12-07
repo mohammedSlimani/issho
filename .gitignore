@@ -61,3 +61,6 @@ typings/
 .next
 
 .idea
+
+elastic/target
+elastic/.idea
