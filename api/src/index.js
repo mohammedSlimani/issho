@@ -16,6 +16,15 @@ app.use(
 //configuring CORS
 app.use(cors());
 
+//user Routes
+app.delete("/users/:id", makeCallback(userControllers.deleteUser));
+app.patch("/users/:id", makeCallback(userControllers.editUser));
+app.post("/users/googleouath", makeCallback(userControllers.googleOuath));
+// TODO: app.post("users/:id", makeCallback(userControllers.resetPassword);
+app.post("/users", makeCallback(userControllers.searchUser));
+app.post("/users/signin", makeCallback(userControllers.signIn));
+app.post("/users/signup", makeCallback(userControllers.signUp));
+
 
 
 const pst = app.listen(3000, () => {
