@@ -31,3 +31,43 @@ const updateUser = (changes) => {
     return Api.post("/users/update", changes);
 };
 
+
+/*********************************
+ ********    POSTS     ************
+ ********************************* */
+
+const getAllPosts = () => {
+    console.log('getting all the posts');
+    return Api.get("/posts/all")
+};
+const getPostsByUserId = (userId) => {
+    console.log('getting the posts of the user with id : ', userId);
+    return Api.get(`/posts/userId?userId=${userId}`);
+};
+const createPost = (postInfo) =>{
+    console.log("creating a post with the info:", postInfo);
+    return Api.post("/posts/create", postInfo);
+};
+const updatePost = (changes) => {
+    console.log('changing the post with info');
+    return Api.post("/posts/update", changes);
+};
+const deletePost = (id) => {
+    console.log('deleting the post with id ', id);
+    return Api.delete(`/posts/delete?id=${id}`);
+};
+
+const ESService = Object.freeze({
+    getAllUser,
+    getUserById,
+    getUserByEmail,
+    getUserByName,
+    createUser,
+    updateUser,
+    getAllPosts,
+    getPostsByUserId,
+    createPost,
+    updatePost,
+    deletePost
+});
+export default ESService;
