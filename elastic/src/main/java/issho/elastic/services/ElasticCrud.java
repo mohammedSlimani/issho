@@ -1,5 +1,7 @@
 package issho.elastic.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -21,6 +23,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,13 +42,21 @@ public abstract class ElasticCrud {
     RestHighLevelClient client;
 
 
-    public ElasticCrud(String index) {
+    public ElasticCrud(String index) throws IOException {
         this.index = index;
         this.Init();
     }
 
 
-    public void Init(){
+    public void Init() throws IOException {
+        // read from config.json
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(new File("config.json")).path("dev_1");
+        this.host = rootNode.path("host").toString().replace("\"", "");
+        this.port = rootNode.path("port").asInt();
+        this.user = rootNode.path("user").toString().replace("\"", "");
+        this.password = rootNode.path("password").toString().replace("\"", "");
+
         // credentials
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY,
@@ -87,9 +98,9 @@ public abstract class ElasticCrud {
     }
 
     public void update(String id, String object) throws IOException {
-        UpdateRequest request = new UpdateRequest(this.index, id);
-        request.doc(object, XContentType.JSON);
-        this.client.update(request, RequestOptions.DEFAULT);
+        IndexRequest request = new IndexRequest(this.index).id(id);
+        request.source(object, XContentType.JSON);
+        this.client.index(request, RequestOptions.DEFAULT);
     }
 
 
@@ -106,7 +117,7 @@ public abstract class ElasticCrud {
         GetRequest getRequest = new GetRequest(
                 this.index,
                 id);
-        return this.client.get(getRequest, RequestOptions.DEFAULT).getSource().toString();
+        return this.client.get(getRequest, RequestOptions.DEFAULT).getSourceAsString();
     }
 
 

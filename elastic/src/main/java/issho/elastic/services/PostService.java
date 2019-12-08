@@ -17,7 +17,7 @@ import java.util.List;
 
 public class PostService extends ElasticCrud{
 
-    public PostService(String index) {
+    public PostService(String index) throws IOException {
         super(index);
         this.Init();
     }

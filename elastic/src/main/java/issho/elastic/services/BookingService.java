@@ -14,7 +14,7 @@ import java.util.List;
 
 public class BookingService extends ElasticCrud{
 
-    public BookingService(String index) {
+    public BookingService(String index) throws IOException {
         super(index);
     }
 

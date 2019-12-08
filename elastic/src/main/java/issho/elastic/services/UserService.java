@@ -14,7 +14,7 @@ import java.util.List;
 
 public class UserService extends ElasticCrud {
 
-    public UserService(String index) {
+    public UserService(String index) throws IOException {
         super(index);
     }
 
