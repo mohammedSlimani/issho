@@ -25,7 +25,15 @@ app.post("/users", makeCallback(userControllers.searchUser));
 app.post("/users/signin", makeCallback(userControllers.signIn));
 app.post("/users/signup", makeCallback(userControllers.signUp));
 
-
+//Post routes
+app.post("/posts", makeCallback(postControllers.addPost));
+app.post("/posts/approve", makeCallback(postControllers.approveUser));
+app.delete("/posts", makeCallback(postControllers.deletePost));
+app.patch("/posts/:id", makeCallback(postControllers.editPost));
+app.post("/posts/reject", makeCallback(postControllers.rejectUser));
+app.post("/posts/search", makeCallback(postControllers.searchPost));
+app.post("/posts/subscribe", makeCallback(postControllers.subscribeUser));
+app.post("/posts/unsubscribe", makeCallback(postControllers.unsubscribeUser));
 
 const pst = app.listen(3000, () => {
     console.log(
