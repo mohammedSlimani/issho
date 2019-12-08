@@ -2,16 +2,11 @@
 
 ## How to run the server on your machine
 
-- First let's Start the Mongod Service (install it if you dont have it) 
-```
-sudo mongod
-```
-- Now that your mongodb service is up and running, leave it like that 
-- install the dependecies:
+- First make sure you are on the directory API then install the dependencies:
 ```
 yarn install
 ```
-- Run the server
+- Run the server of the elastic search, Check the readme under the directory ``elastic`` then start the server:
 ```
 yarn start
 ```
