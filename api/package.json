@@ -13,7 +13,7 @@
     "express": "^4.17.1"
   },
   "scripts": {
-    "start": "babel-node ./src/index.js"
+    "start": "nodemon --exec babel-node ./src/index.js"
   },
   "license": "MIT",
   "repository": {
