@@ -8,7 +8,7 @@ export default function BuildMakePost({Id}) {
                                  des,
                                  imgUrl = NOIMAGE,
                                  dateAdded = new Date().getTime(),
-                                 location,
+                                 location = {},
                                  approved = false,
                                  usersApproved = [],
                                  usersPended = [],

@@ -7,7 +7,7 @@ export default function makeAddPostController({addPost}) {
             const {
                 authorId,
                 title,
-                location,
+                //location,
                 des,
                 pathToImage,
             } = httpRequest.body;
@@ -18,7 +18,7 @@ export default function makeAddPostController({addPost}) {
             let postInfo = {
                 authorId,
                 title,
-                location: JSON.parse(location),
+                //location: JSON.parse(location),
                 des,
                 imgUrl: pathToImage,
             };

@@ -30,11 +30,13 @@ export default function BuildMakeUser({Id, crypt, validator}) {
             getName: () => name,
             getPwd: () => encryptedPwd,
             getEmail: () => email.toLowerCase(),
+            getApproved : () => approved,
             getId: () => id,
             getGoogleId: () => googleId,
             approve: () => {
                 approved = true;
             },
+            getImgUrl : () => imgUrl,
             getDeleted : () => deleted,
             disapprove: () => {
                 //We can use this to bad users that misbehave
