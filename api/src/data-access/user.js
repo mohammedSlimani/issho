@@ -6,7 +6,8 @@ export default function makeUsersDb (){
         findByEmail,
         update,
         insert,
-        remove
+        remove,
+        search
     });
     async function remove(){
         throw new Error('Remove User To be implemented!');
@@ -22,5 +23,8 @@ export default function makeUsersDb (){
     }
     async function update(changes){
         return await ESService.updateUser(changes);
+    }
+    async function search({ name }){
+         return await ESService.getUserByName(name);
     }
 }

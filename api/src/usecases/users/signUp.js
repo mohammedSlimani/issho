@@ -6,8 +6,8 @@ export default function makeSignUp({ usersDb }) {
             throw new Error("Need to provide a password for the Local signup");
         }
         const exist = await usersDb.findByEmail({ email });
-
-        if (exist) {
+        console.log('signup exist :', exist);
+        if (exist && Object.entries(exist).length !== 0)  {
             throw new Error("User Already exist");
         }
 
