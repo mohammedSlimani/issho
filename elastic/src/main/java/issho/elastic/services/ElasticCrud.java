@@ -51,7 +51,7 @@ public abstract class ElasticCrud {
     public void Init() throws IOException {
         // read from config.json
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(new File("config.json")).path("dev_2");
+        JsonNode rootNode = objectMapper.readTree(new File("config.json")).path("dev_1");
         this.host = rootNode.path("host").toString().replace("\"", "");
         this.port = rootNode.path("port").asInt();
         this.user = rootNode.path("user").toString().replace("\"", "");

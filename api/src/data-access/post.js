@@ -11,7 +11,7 @@ export default function makePostsDb (){
         return await ESService.getUserById(id)
     }
     async function search(){
-        throw new Error('Search post To be implemented!')
+        return await ESService.getAllPosts();
     }
     async function insert(postInfo){
         return await ESService.createPost(postInfo);
