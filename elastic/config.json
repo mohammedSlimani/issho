@@ -1,0 +1,15 @@
+{
+
+  "dev_1":{
+    "host": "6e9c3739ed50419d93a8933695984f2e.us-east-1.aws.found.io",
+    "port": 9243,
+    "user": "elastic",
+    "password": "qNysViGBcEkKjV0j5jUBvTlt"
+  },
+  "dev_2":{
+    "host": "kafka-course-8169368270.eu-west-1.bonsaisearch.net",
+    "port": 443,
+    "user": "mrgm7glbc3",
+    "password": "2wl1bgvk9f"
+  }
+}

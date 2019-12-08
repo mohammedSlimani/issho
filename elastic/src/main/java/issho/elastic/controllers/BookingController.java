@@ -15,6 +15,9 @@ public class BookingController {
 
     BookingService bookingService = new BookingService("bookings");
 
+    public BookingController() throws IOException {
+    }
+
     //----------------------
     //----------GET------------
     //----------------------
@@ -40,15 +43,15 @@ public class BookingController {
 
 
     @PostMapping("/bookings/create")
-    public void create(@RequestBody String post) throws IOException {
-        bookingService.create(post);
+    public void create(@RequestBody String booking) throws IOException {
+        bookingService.create(booking);
     }
 
 
     @PostMapping("/bookings/update")
-    public void update(@RequestBody String post) throws IOException {
+    public void update(@RequestBody String booking) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(post);
+        JsonNode rootNode = objectMapper.readTree(booking);
         bookingService.update(rootNode.path("id").toString().replace("\"", ""), rootNode.toString());
     }
 

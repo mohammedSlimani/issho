@@ -6,5 +6,4 @@ issho/elastic/services/ElasticCrud.class
 issho/elastic/services/UserService.class
 issho/elastic/services/BookingService.class
 issho/elastic/controllers/BookingController.class
-issho/elastic/controllers/DemoCtl.class
 issho/elastic/Application.class

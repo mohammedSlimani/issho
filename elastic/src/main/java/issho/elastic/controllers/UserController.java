@@ -17,6 +17,9 @@ public class UserController {
 
     UserService userService = new UserService("users");
 
+    public UserController() throws IOException {
+    }
+
     //----------------------
     //----------GET------------
     //----------------------
