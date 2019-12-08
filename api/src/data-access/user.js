@@ -1,7 +1,7 @@
 export default function makeUsersDb (){
     return Object.freeze({
         findById,
-        findByEmail
+        findByEmail,
         update,
         insert,
         remove
