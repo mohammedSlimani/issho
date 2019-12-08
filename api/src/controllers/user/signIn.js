@@ -4,8 +4,8 @@ export default function makeSignInController ({signIn}) {
             "Content-Type": "multipart/form-data"
         };
         try {
-            const {email, password} = httpRequest.body;
-            const user = await signIn({password, email});
+            const {email, pwd} = httpRequest.body;
+            const user = await signIn({pwd, email});
 
             return {
                 headers,
