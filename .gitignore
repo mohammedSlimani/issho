@@ -64,3 +64,5 @@ typings/
 
 elastic/target
 elastic/.idea
+
+*.class
