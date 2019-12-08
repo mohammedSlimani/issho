@@ -107,13 +107,17 @@ export class UserService implements Crud<User[]> {
   }
 
   getUser(userId: string) {
+   /*
     return this.http
-      .get<UserData>(`https://issho-7539b.firebaseio.com/users/${userId}.json`)
-      .pipe(
-        map(resData => {
-          let user: User;
-          user = new User(userId, resData.email, resData.name);
-          return user;
+      .get<UserData>(`https://issho-7539b.firebaseio.com/users/${userId}.json`)*/
+      return this.http.post('http://localhost:3000/users/signin', {email: 'sldssssdss@gmail.com', pwd: 'wtfwtf'}).pipe(
+        map((resData: User) => {
+          // let user: User;
+          // user = new User(userId, resData.email, resData.name);
+          console.log('resData', resData);
+          // return new User(resData.id, resData.email, resData.name);
+          const {id, email, name} = resData;
+          return new User(id, email, name);
         })
       );
   }
