@@ -1,3 +1,5 @@
+import ESService from "../utils/ESService";
+
 export default function makeUsersDb (){
     return Object.freeze({
         findById,
@@ -7,18 +9,18 @@ export default function makeUsersDb (){
         remove
     });
     async function remove(){
-        throw new Error('To be implemented!')
+        throw new Error('Remove User To be implemented!');
     }
-    async function findById(){
-        throw new Error('To be implemented!')
+    async function findById({id}){
+        return await ESService.getUserById(id);
     }
-    async function findByEmail(){
-        throw new Error('To be implemented!')
+    async function findByEmail({email}){
+        return await ESService.getUserByEmail(email);
     }
-    async function insert(){
-        throw new Error('To be implemented!')
+    async function insert(userInfo){
+        return await ESService.createUser(userInfo);
     }
-    async function update(){
-        throw new Error('To be implemented!')
+    async function update(changes){
+        return await ESService.updateUser(changes);
     }
 }
