@@ -1,10 +1,12 @@
+const NOIMAGE = "https://www.clipartwiki.com/clipimg/detail/197-1979569_no-profile.png"
+
 export default function BuildMakePost({Id}) {
     return function makePost({
                                  id = Id.makeId(),
                                  authorId,
                                  title,
                                  des,
-                                 imgUrl,
+                                 imgUrl = NOIMAGE,
                                  dateAdded = new Date().getTime(),
                                  location,
                                  approved = false,
