@@ -35,7 +35,7 @@ export default function BuildMakeUser({Id, crypt, validator}) {
             approve: () => {
                 approved = true;
             },
-            getDeleted : () => deleted
+            getDeleted : () => deleted,
             disapprove: () => {
                 //We can use this to bad users that misbehave
                 approved = false;

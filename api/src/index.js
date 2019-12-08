@@ -1,5 +1,5 @@
 import express from "express";
-import expressCallback from "express-callback"
+import makeCallback from "./express-callback"
 import bodyParser from "body-parser"
 import {userControllers,postControllers} from "./controllers"
 import cors from  "cors";
