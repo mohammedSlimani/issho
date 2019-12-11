@@ -3,6 +3,7 @@ package issho.elastic.services;
 
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.core.CountRequest;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -39,6 +40,7 @@ public class PostService extends ElasticCrud{
         }
         return hits.toString();
     }
+
 
 
 }
