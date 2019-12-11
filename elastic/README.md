@@ -39,6 +39,11 @@ password: qNysViGBcEkKjV0j5jUBvTlt
 
 
 
+#### about POST/create requests
+```
+if u send an object with its id defined { id:"smsmsms".. } it s goin to be inserted using that same id,
+otherwise elasticsearch will define its own id
+```
 
 
 
