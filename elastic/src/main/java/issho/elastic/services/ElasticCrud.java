@@ -22,6 +22,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 
 import java.io.File;
 import java.io.IOException;
@@ -83,6 +84,12 @@ public abstract class ElasticCrud {
         this.client.index(request, RequestOptions.DEFAULT);
     }
 
+    public void create(String object, String id) throws IOException {
+        IndexRequest request = new IndexRequest(this.index).id(id);
+        request.source(object, XContentType.JSON);
+        this.client.index(request, RequestOptions.DEFAULT);
+    }
+
     public List<String> read() throws IOException {
         SearchRequest searchRequest = new SearchRequest(this.index);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -111,13 +118,18 @@ public abstract class ElasticCrud {
         this.client.delete(request, RequestOptions.DEFAULT);
     }
 
-
-
     public String getById(String id) throws IOException {
         GetRequest getRequest = new GetRequest(
                 this.index,
                 id);
         return this.client.get(getRequest, RequestOptions.DEFAULT).getSourceAsString();
+    }
+
+
+    public String exists(String id) throws  IOException{
+        GetRequest getRequest = new GetRequest( this.index, id);
+        getRequest.fetchSourceContext(new FetchSourceContext(false));
+        return  Boolean.toString(this.client.exists(getRequest, RequestOptions.DEFAULT));
     }
 
 

@@ -2,6 +2,7 @@ package issho.elastic.services;
 
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.core.CountRequest;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -43,6 +44,18 @@ public class BookingService extends ElasticCrud{
             hits.add(hit.getSourceAsString());
         }
         return hits.toString();
+    }
+
+
+
+    public String getCountByPost(String postId) throws IOException {
+        CountRequest countRequest = new CountRequest();
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(QueryBuilders.matchPhraseQuery("postId", postId));
+        countRequest.source(searchSourceBuilder);
+        long count =   this.client.count(countRequest, RequestOptions.DEFAULT).getCount();
+        return  String.valueOf(count);
+
     }
 
 
