@@ -45,14 +45,29 @@ public class UserController {
     }
 
 
+    @GetMapping("/users/exist")
+    public String exists(@RequestParam(name="id") String id) throws IOException {
+        return userService.exists(id).toString();
+    }
+
+
     //----------------------
     //----------POST------------
     //----------------------
 
+
     @PostMapping("/users/create")
     public void create(@RequestBody String user) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(user);
+        String id = rootNode.path("id").toString();
+        // if id is defined, then create with id
+        if ( id != null && id != "" ){
+            userService.create(user, id);
+        }
         userService.create(user);
     }
+
 
 
 

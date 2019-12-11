@@ -37,6 +37,11 @@ public class BookingController {
         return bookingService.getByPost(postId);
     }
 
+    @GetMapping("/bookings/count")
+    public String getCountByPost(@RequestParam(name="postId") String postId) throws IOException {
+        return bookingService.countBookers(postId);
+    }
+
     //----------------------
     //----------POST------------
     //----------------------
