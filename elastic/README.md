@@ -37,3 +37,91 @@ username: elastic
 password: qNysViGBcEkKjV0j5jUBvTlt
 ```
 
+
+
+
+
+
+---
+#### - users
+
+---
+
+### `GET` 
+
+| root  | description |
+| ------ | ------------- |
+| ` /users/all `  | get all users  |
+| ` /users/id{id} `  | get user by id  |
+| ` /users/email{email} `  | get user by email  |
+| ` /users/name{name} `  | get user by name  |
+| ` /users/exists{id} `  | return if user exists or not  |
+
+### `POST`
+
+| root  | description |
+| ------------- | ------------- |
+| ` /users/create `  | create user  |
+| ` /users/update `  | update user  |
+
+### `DELETE`
+
+| root  | description |
+| ------------- | ------------- |
+
+
+
+
+---
+#### - posts
+
+---
+
+### `GET`
+
+| root  | description |
+| ------------- | ------------- |
+| ` /posts/all `  | get all posts  |
+| ` /posts/userId{userId} `  | get posts by userId  |
+
+
+### `POST`
+
+| root  | description |
+| ------------- | ------------- |
+| ` /posts/create `  | creates a post  |
+| ` /posts/update `  | updates a post  |
+
+### `DELETE`
+
+| root  | description |
+| ------------- | ------------- |
+| ` /users/delete{id} `  | deletes a post  |
+
+
+---
+#### - bookings
+
+---
+
+### `GET`
+
+| root  | description |
+| ------------- | ------------- |
+| ` /bookings/all `  | returns all booking  |
+| ` /bookings/userId{userId} `  | return all bookings of a specific user by userId  |
+| ` /bookings/userId{postId} `  | return all bookings of a specific post postId  |
+| ` /bookings/countByPost{postId} `  | returns the count of bookings on a specific post  |
+
+### `POST`
+
+| root  | description |
+| ------------- | ------------- |
+| ` /bookings/create `  | creates a booking  |
+| ` /bookings/update `  | updates a booking  |
+
+### `DELETE`
+
+| root  | description |
+| ------------- | ------------- |
+| ` /bookings/delete{id} `  | deletes the booking with id  |
