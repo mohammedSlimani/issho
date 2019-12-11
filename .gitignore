@@ -68,3 +68,7 @@ elastic/.idea
 *.class
 
 elastic/elastic-1.0.jar
+
+elastic/.project
+
+elastic/.settings/
