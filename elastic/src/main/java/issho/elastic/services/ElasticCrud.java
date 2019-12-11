@@ -8,11 +8,13 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
+import org.elasticsearch.action.admin.indices.refresh.RefreshRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
@@ -31,7 +33,6 @@ import java.util.List;
 
 public abstract class ElasticCrud {
 
-
     // config to be imported
     String host = "kafka-course-8169368270.eu-west-1.bonsaisearch.net";
     Integer port = 443;
@@ -46,6 +47,11 @@ public abstract class ElasticCrud {
     public ElasticCrud(String index) throws IOException {
         this.index = index;
         this.Init();
+    }
+
+    public void refresh() throws IOException {
+        RefreshRequest request = new RefreshRequest(this.index);
+        this.client.indices().refresh(request, RequestOptions.DEFAULT);
     }
 
 
@@ -78,24 +84,33 @@ public abstract class ElasticCrud {
         this.client.close();
     }
 
-    public void create(String object) throws IOException {
+    public String create(String object) throws IOException {
         IndexRequest request = new IndexRequest(this.index);
         request.source(object, XContentType.JSON);
-        this.client.index(request, RequestOptions.DEFAULT);
+        IndexResponse res =  this.client.index(request, RequestOptions.DEFAULT);
+        this.refresh();
+        if (res.getResult().toString() == "CREATED"){
+            return  object;
+        }
+        return "ERROR 503: " + res;
     }
 
-    public void create(String object, String id) throws IOException {
+    public String create(String object, String id) throws IOException {
         IndexRequest request = new IndexRequest(this.index).id(id);
         request.source(object, XContentType.JSON);
-        this.client.index(request, RequestOptions.DEFAULT);
+        IndexResponse res =  this.client.index(request, RequestOptions.DEFAULT);
+        this.refresh();
+        if (res.getResult().toString() == "CREATED"){
+            return  object;
+        }
+        return "ERROR 503: " + res;
     }
 
     public List<String> read() throws IOException {
         SearchRequest searchRequest = new SearchRequest(this.index);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchAllQuery());
+        searchSourceBuilder.query(QueryBuilders.matchAllQuery()).size( 100 );
         searchRequest.source(searchSourceBuilder);
-
         SearchHits searchHits = this.client.search(searchRequest, RequestOptions.DEFAULT).getHits();
         List<String> hits = new ArrayList<String>();
         for (SearchHit hit : searchHits) {
@@ -104,18 +119,29 @@ public abstract class ElasticCrud {
         return hits;
     }
 
-    public void update(String id, String object) throws IOException {
+    public String update(String id, String object) throws IOException {
         IndexRequest request = new IndexRequest(this.index).id(id);
         request.source(object, XContentType.JSON);
         this.client.index(request, RequestOptions.DEFAULT);
+        IndexResponse res =  this.client.index(request, RequestOptions.DEFAULT);
+        this.refresh();
+        if (res.getResult().toString() == "UPDATED"){
+            return  object;
+        }
+        return "ERROR 503: " + res;
     }
 
 
-    public void delete(String id) throws IOException {
+    public String delete(String id) throws IOException {
         DeleteRequest request = new DeleteRequest(
                 this.index,
                 id);
-        this.client.delete(request, RequestOptions.DEFAULT);
+        DeleteResponse res = this.client.delete(request, RequestOptions.DEFAULT);
+        this.refresh();
+        if (res.getResult().toString() == "DELETED"){
+            return "DELETED";
+        }
+        return "ERROR 503: " + res;
     }
 
     public String getById(String id) throws IOException {
