@@ -4,6 +4,7 @@ package issho.elastic.controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import issho.elastic.services.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
@@ -55,23 +56,23 @@ public class UserController {
     //----------------------
 
     @PostMapping("/users/create")
-    public void create(@RequestBody String user) throws IOException {
+    public String create(@RequestBody String user) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(user);
-        String id = rootNode.path("id").toString();
-        if ( id != null && id != ""){
-            userService.create(user, id);
+        String id = rootNode.path("id").toString().replace("\"", "");
+        if (StringUtils.isEmpty(id)){
+            return userService.create(user, id);
         }else {
-            userService.create(user);
+            return userService.create(user);
         }
     }
 
 
     @PostMapping("/users/update")
-    public void update(@RequestBody String object) throws IOException {
+    public String update(@RequestBody String object) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(object);
-        userService.update(rootNode.path("id").toString().replace("\"", ""), rootNode.toString());
+        return userService.update(rootNode.path("id").toString().replace("\"", ""), rootNode.toString());
     }
 
 

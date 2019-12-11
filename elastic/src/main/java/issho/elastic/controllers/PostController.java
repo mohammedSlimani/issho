@@ -4,6 +4,7 @@ package issho.elastic.controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import issho.elastic.services.PostService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -35,15 +36,22 @@ public class PostController {
     //----------POST------------
     //----------------------
     @PostMapping("posts/create")
-    public void create(@RequestBody String post) throws IOException {
-        postService.create(post);
+    public String create(@RequestBody String post) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(post);
+        String id = rootNode.path("id").toString().replace("\"", "");
+        if (! StringUtils.isEmpty(id)){
+            return postService.create(post, id);
+        }else {
+            return postService.create(post);
+        }
     }
 
     @PostMapping("posts/update")
-    public void update(@RequestBody String post) throws IOException {
+    public String update(@RequestBody String post) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(post);
-        postService.update(rootNode.path("id").toString().replace("\"", ""), rootNode.toString());
+        return postService.update(rootNode.path("id").toString().replace("\"", ""), rootNode.toString());
     }
 
 
@@ -51,8 +59,8 @@ public class PostController {
     //----------DELETE------------
     //----------------------
     @DeleteMapping("/posts/delete")
-    public void delete(@RequestParam(name = "id") String id) throws IOException {
-        postService.delete(id);
+    public String delete(@RequestParam(name = "id") String id) throws IOException {
+        return postService.delete(id);
     }
 
 

@@ -4,14 +4,14 @@ package issho.elastic.controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import issho.elastic.services.BookingService;
+import org.apache.commons.lang3.StringUtils;
+import org.mockito.internal.util.StringUtil;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
 @RestController
 public class BookingController {
-
-
 
     BookingService bookingService = new BookingService("bookings");
 
@@ -49,16 +49,24 @@ public class BookingController {
 
 
     @PostMapping("/bookings/create")
-    public void create(@RequestBody String booking) throws IOException {
-        bookingService.create(booking);
+    public String create(@RequestBody String booking) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(booking);
+        String id = rootNode.path("id").toString().replace("\"", "");
+        if (! StringUtils.isEmpty(id)){
+            return bookingService.create(booking, id);
+        }else {
+            return bookingService.create(booking);
+        }
     }
 
 
     @PostMapping("/bookings/update")
-    public void update(@RequestBody String booking) throws IOException {
+    public String update(@RequestBody String booking) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(booking);
-        bookingService.update(rootNode.path("id").toString().replace("\"", ""), rootNode.toString());
+        String id = rootNode.path("id").toString().replace("\"", "");
+        return bookingService.update(id, rootNode.toString());
     }
 
 
@@ -67,8 +75,8 @@ public class BookingController {
     //----------------------
 
     @DeleteMapping("/bookings/delete")
-    public void delete(@RequestParam(name = "id") String id) throws IOException {
-        bookingService.delete(id);
+    public String delete(@RequestParam(name = "id") String id) throws IOException {
+        return bookingService.delete(id);
     }
 
 
