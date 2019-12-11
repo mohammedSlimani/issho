@@ -1,5 +1,7 @@
 package issho.elastic.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.core.CountRequest;
@@ -52,7 +54,9 @@ public class BookingService extends ElasticCrud{
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(QueryBuilders.matchPhraseQuery("postId", postId));
         countRequest.source(searchSourceBuilder);
-        return this.client.count(countRequest, RequestOptions.DEFAULT).toString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        long count =  this.client.count(countRequest, RequestOptions.DEFAULT).getCount();
+        return String.valueOf(count);
     }
 
 

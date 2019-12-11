@@ -66,10 +66,10 @@ public abstract class ElasticCrud {
         // host:port
         RestClientBuilder builder = RestClient.builder(new HttpHost(this.host, this.port, "https"))
                 .setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
-            @Override
-            public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpAsyncClientBuilder) {
-                return httpAsyncClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
-            }
+                @Override
+                public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpAsyncClientBuilder) {
+                    return httpAsyncClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+                }
         });
         this.client = new RestHighLevelClient(builder);
     }
@@ -102,6 +102,7 @@ public abstract class ElasticCrud {
         for (SearchHit hit : searchHits) {
             hits.add(hit.getSourceAsString());
         }
+        System.out.println( hits );
         return hits;
     }
 
