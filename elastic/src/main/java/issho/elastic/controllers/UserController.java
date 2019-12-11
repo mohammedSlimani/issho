@@ -44,6 +44,11 @@ public class UserController {
         return  userService.getByName(name);
     }
 
+    @GetMapping("/users/exists")
+    public String getExists(@RequestParam(name = "userId") String userId) throws IOException {
+        return  userService.exists(userId);
+    }
+
 
     //----------------------
     //----------POST------------
@@ -51,7 +56,14 @@ public class UserController {
 
     @PostMapping("/users/create")
     public void create(@RequestBody String user) throws IOException {
-        userService.create(user);
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(user);
+        String id = rootNode.path("id").toString();
+        if ( id != null && id != ""){
+            userService.create(user, id);
+        }else {
+            userService.create(user);
+        }
     }
 
 
