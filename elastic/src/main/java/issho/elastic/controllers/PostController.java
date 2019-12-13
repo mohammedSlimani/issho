@@ -73,7 +73,9 @@ public class PostController {
     //----------------------
     @DeleteMapping("/posts/delete")
     public String delete(@RequestParam(name = "id") String id) throws IOException {
-        return postService.delete(id);
+        String resp = postService.delete(id);
+        Processor.errorHandler(resp);
+        return  resp;
     }
 
 

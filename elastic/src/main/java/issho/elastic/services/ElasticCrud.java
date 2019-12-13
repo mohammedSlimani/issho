@@ -2,6 +2,7 @@ package issho.elastic.services;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.internal.filter.ValueNode;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -29,14 +30,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import issho.elastic.helpers.*;
 
 public abstract class ElasticCrud {
 
     // config to be imported
-    String host = "kafka-course-8169368270.eu-west-1.bonsaisearch.net";
-    Integer port = 443;
-    String user = "mrgm7glbc3";
-    String password = "2wl1bgvk9f";
+    String host;
+    Integer port;
+    String user;
+    String password;
 
     String index;
 
@@ -89,9 +91,9 @@ public abstract class ElasticCrud {
         IndexResponse res =  this.client.index(request, RequestOptions.DEFAULT);
         this.refresh();
         if (res.getResult().toString() == "CREATED"){
-            return  object;
+            return  "CREATED";
         }
-        return "ERROR 503: " + res;
+        return Processor.constructResp(503, res.toString());
     }
 
     public String create(String object, String id) throws IOException {
@@ -100,9 +102,9 @@ public abstract class ElasticCrud {
         IndexResponse res =  this.client.index(request, RequestOptions.DEFAULT);
         this.refresh();
         if (res.getResult().toString() == "CREATED"){
-            return  object;
+            return  "CREATED ";
         }
-        return "ERROR 503: " + res;
+        return Processor.constructResp(503, res.toString());
     }
 
     public List<String> read() throws IOException {
@@ -125,9 +127,9 @@ public abstract class ElasticCrud {
         IndexResponse res =  this.client.index(request, RequestOptions.DEFAULT);
         this.refresh();
         if (res.getResult().toString() == "UPDATED"){
-            return  object;
+            return "UPDATED ";
         }
-        return "ERROR 503: " + res;
+        return Processor.constructResp(503, res.toString());
     }
 
 
@@ -140,7 +142,7 @@ public abstract class ElasticCrud {
         if (res.getResult().toString() == "DELETED"){
             return "DELETED";
         }
-        return "ERROR 503: " + res;
+        return Processor.constructResp(503, res.toString());
     }
 
     public String getById(String id) throws IOException {
@@ -148,10 +150,10 @@ public abstract class ElasticCrud {
                 this.index,
                 id);
         GetResponse res = this.client.get(getRequest, RequestOptions.DEFAULT);
-        if (res.isExists() == true){
+        if (res.isExists()){
             return res.getSourceAsString();
         }
-        return "ERROR 503: " + res;
+        return Processor.constructResp(503, res.toString());
     }
 
 
