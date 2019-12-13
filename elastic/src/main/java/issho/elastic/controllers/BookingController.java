@@ -6,7 +6,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import issho.elastic.services.BookingService;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.internal.util.StringUtil;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+import issho.elastic.helpers.Processor;
 
 import java.io.IOException;
 
@@ -29,17 +32,23 @@ public class BookingController {
 
     @GetMapping("bookings/id")
     public String getById(@RequestParam(name = "id") String id) throws IOException {
-        return bookingService.getById(id);
+        String resp = bookingService.getById(id);
+        Processor.errorHandler(resp);
+        return resp;
     }
 
     @GetMapping("bookings/userId")
     public String getByUser(@RequestParam(name = "userId") String userId) throws IOException {
-        return bookingService.getByUser(userId);
+        String resp=  bookingService.getByUser(userId);
+        Processor.errorHandler(resp);
+        return  resp;
     }
 
     @GetMapping("bookings/postId")
     public String getByPost(@RequestParam(name = "postId") String postId) throws IOException {
-        return bookingService.getByPost(postId);
+        String resp = bookingService.getByPost(postId);
+        Processor.errorHandler(resp);
+        return  resp;
     }
 
 
@@ -55,23 +64,26 @@ public class BookingController {
 
     @PostMapping("/bookings/create")
     public String create(@RequestBody String booking) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(booking);
+        JsonNode rootNode = Processor.toJson(booking);
         String id = rootNode.path("id").toString().replace("\"", "");
+        String resp ="";
         if (! StringUtils.isEmpty(id)){
-            return bookingService.create(booking, id);
+             resp = bookingService.create(booking, id);
         }else {
-            return bookingService.create(booking);
+            resp = bookingService.create(booking);
         }
+        Processor.errorHandler(resp);
+        return  resp;
     }
 
 
     @PostMapping("/bookings/update")
     public String update(@RequestBody String booking) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(booking);
+        JsonNode rootNode = Processor.toJson(booking);
         String id = rootNode.path("id").toString().replace("\"", "");
-        return bookingService.update(id, rootNode.toString());
+        String resp = bookingService.update(id, rootNode.toString());
+        Processor.errorHandler(resp);
+        return  resp;
     }
 
 
@@ -81,7 +93,9 @@ public class BookingController {
 
     @DeleteMapping("/bookings/delete")
     public String delete(@RequestParam(name = "id") String id) throws IOException {
-        return bookingService.delete(id);
+        String resp = bookingService.delete(id);
+        Processor.errorHandler(resp);
+        return  resp;
     }
 
 

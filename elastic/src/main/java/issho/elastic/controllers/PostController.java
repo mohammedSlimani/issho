@@ -8,11 +8,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-
+import issho.elastic.helpers.Processor;
 @RestController
 public class PostController {
 
     PostService postService = new PostService("posts");
+
 
     public PostController() throws IOException {
     }
@@ -29,12 +30,16 @@ public class PostController {
 
     @GetMapping("posts/id")
     public String getById(@RequestParam(name = "id") String id) throws IOException {
-        return postService.getById(id);
+        String resp =  postService.getById(id);
+        Processor.errorHandler(resp);
+        return  resp;
     }
 
     @GetMapping("/posts/userId")
     public String getByUser(@RequestParam(name="userId") String userId) throws IOException {
-        return postService.getByUser(userId);
+        String resp = postService.getByUser(userId);
+        Processor.errorHandler(resp);
+        return  resp;
     }
 
     //----------------------
@@ -42,21 +47,24 @@ public class PostController {
     //----------------------
     @PostMapping("posts/create")
     public String create(@RequestBody String post) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(post);
+        JsonNode rootNode = Processor.toJson(post);
         String id = rootNode.path("id").toString().replace("\"", "");
+        String resp ="";
         if (! StringUtils.isEmpty(id)){
-            return postService.create(post, id);
+            resp =  postService.create(post, id);
         }else {
-            return postService.create(post);
+            resp = postService.create(post);
         }
+        Processor.errorHandler(resp);
+        return  resp;
     }
 
     @PostMapping("posts/update")
     public String update(@RequestBody String post) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(post);
-        return postService.update(rootNode.path("id").toString().replace("\"", ""), rootNode.toString());
+        JsonNode rootNode = Processor.toJson(post);
+        String resp =  postService.update(rootNode.path("id").toString().replace("\"", ""), rootNode.toString());
+        Processor.errorHandler(resp);
+        return  resp;
     }
 
 

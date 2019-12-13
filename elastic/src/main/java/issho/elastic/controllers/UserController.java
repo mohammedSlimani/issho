@@ -12,6 +12,7 @@ import java.awt.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
+import issho.elastic.helpers.*;
 
 @RestController
 public class UserController {
@@ -59,8 +60,7 @@ public class UserController {
 
     @PostMapping("/users/create")
     public String create(@RequestBody String user) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(user);
+        JsonNode rootNode = Processor.toJson(user);
         String id = rootNode.path("id").toString().replace("\"", "");
         if (StringUtils.isEmpty(id)){
             return userService.create(user, id);
@@ -71,9 +71,8 @@ public class UserController {
 
 
     @PostMapping("/users/update")
-    public String update(@RequestBody String object) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(object);
+    public String update(@RequestBody String user) throws IOException {
+        JsonNode rootNode = Processor.toJson(user);
         return userService.update(rootNode.path("id").toString().replace("\"", ""), rootNode.toString());
     }
 
