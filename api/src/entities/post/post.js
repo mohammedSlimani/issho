@@ -48,6 +48,7 @@ export default function BuildMakePost({Id}) {
             getDateAdded: () => dateAdded,
             getLocation: () => location,
             getApproved: () => approved,
+            getTitle: ()=> title,
             approve: () => {
                 approved = true
             },

@@ -12,6 +12,7 @@ export default function makeAddPost({postsDb}){
             id: post.getId(),
             imgUrl: post.getImgUrl(),
             authorId: post.getAuthorId(),
+            title:post.getTitle(),
             des: post.getDes(),
             dateAdded: post.getDateAdded(),
             location: post.getLocation(),
