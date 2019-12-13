@@ -27,6 +27,11 @@ public class BookingController {
         return bookingService.read().toString();
     }
 
+    @GetMapping("bookings/id")
+    public String getById(@RequestParam(name = "id") String id) throws IOException {
+        return bookingService.getById(id);
+    }
+
     @GetMapping("bookings/userId")
     public String getByUser(@RequestParam(name = "userId") String userId) throws IOException {
         return bookingService.getByUser(userId);

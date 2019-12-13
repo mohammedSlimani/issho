@@ -87,6 +87,7 @@ otherwise elasticsearch will define its own id
 | root  | description |
 | ------------- | ------------- |
 | ` /posts/all `  | get all posts  |
+| ` /bookings/id{id} `  | returns post by id  |
 | ` /posts/userId{userId} `  | get posts by userId  |
 
 
@@ -113,7 +114,8 @@ otherwise elasticsearch will define its own id
 
 | root  | description |
 | ------------- | ------------- |
-| ` /bookings/all `  | returns all booking  |
+| ` /bookings/all `  | returns all bookings  |
+| ` /bookings/id{id} `  | returns booking by id  |
 | ` /bookings/userId{userId} `  | return all bookings of a specific user by userId  |
 | ` /bookings/userId{postId} `  | return all bookings of a specific post postId  |
 | ` /bookings/countByPost{postId} `  | returns the count of bookings on a specific post  |

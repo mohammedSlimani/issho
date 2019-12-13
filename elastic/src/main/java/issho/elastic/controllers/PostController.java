@@ -27,6 +27,11 @@ public class PostController {
         return  postService.getAll();
     }
 
+    @GetMapping("posts/id")
+    public String getById(@RequestParam(name = "id") String id) throws IOException {
+        return postService.getById(id);
+    }
+
     @GetMapping("/posts/userId")
     public String getByUser(@RequestParam(name="userId") String userId) throws IOException {
         return postService.getByUser(userId);
