@@ -151,7 +151,7 @@ public abstract class ElasticCrud {
         if (res.isExists() == true){
             return res.getSourceAsString();
         }
-        return "NOT FOUND";
+        return "ERROR 503: " + res;
     }
 
 
