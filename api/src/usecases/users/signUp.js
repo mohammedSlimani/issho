@@ -20,7 +20,7 @@ export default function makeSignUp({ usersDb }) {
             id: user.getId(),
             name: user.getName(),
             email: user.getEmail(),
-            password: user.getPwd(),
+            pwd: user.getPwd(),
             googleId: user.getGoogleId(),
             approved: user.getApproved(),
             imgUrl: user.getImgUrl()
