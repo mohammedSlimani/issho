@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import issho.elastic.services.UserService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
@@ -29,6 +30,7 @@ public class UserController {
     public String getAll() throws IOException {
         return userService.read().toString();
     }
+
 
     @GetMapping("/users/id")
     public String getById(@RequestParam(name = "id") String id) throws IOException {
