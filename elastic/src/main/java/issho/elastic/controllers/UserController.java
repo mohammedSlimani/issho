@@ -63,7 +63,7 @@ public class UserController {
         JsonNode rootNode = Processor.toJson(user);
         String id = rootNode.path("id").toString().replace("\"", "");
         String resp = "";
-        if (StringUtils.isEmpty(id)){
+        if (! StringUtils.isEmpty(id)){
             resp =  userService.create(user, id);
         }else {
             resp = userService.create(user);
