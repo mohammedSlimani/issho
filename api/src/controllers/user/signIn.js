@@ -9,7 +9,7 @@ export default function makeSignInController ({signIn}) {
 
             return {
                 headers,
-                statusCode: 201,
+                statusCode: 200,
                 body: { ...user }
             };
         } catch (e) {

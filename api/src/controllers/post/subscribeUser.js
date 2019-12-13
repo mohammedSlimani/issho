@@ -13,7 +13,7 @@ export default function makeSubscribeUserController({subscribeUser}) {
 
             return {
                 headers,
-                statusCode: 201,
+                statusCode: 200,
                 body: { ...post }
             };
         } catch (e) {

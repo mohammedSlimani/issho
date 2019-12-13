@@ -12,7 +12,7 @@ export default function makeSearchPostController({searchPost}) {
 
             return {
                 headers,
-                statusCode: 201,
+                statusCode: 200,
                 body: { ...post }
             };
         } catch (e) {
