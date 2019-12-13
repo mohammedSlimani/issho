@@ -148,7 +148,10 @@ public abstract class ElasticCrud {
                 this.index,
                 id);
         GetResponse res = this.client.get(getRequest, RequestOptions.DEFAULT);
-        return res.getSourceAsString();
+        if (res.isExists() == true){
+            return res.getSourceAsString();
+        }
+        return "NOT FOUND";
     }
 
 
