@@ -66,14 +66,14 @@ public class BookingController {
     public String create(@RequestBody String booking) throws IOException {
         JsonNode rootNode = Processor.toJson(booking);
         String id = rootNode.path("id").toString().replace("\"", "");
-        String resp ="";
+        String resp = "";
         if (! StringUtils.isEmpty(id)){
              resp = bookingService.create(booking, id);
         }else {
             resp = bookingService.create(booking);
         }
         Processor.errorHandler(resp);
-        return  resp;
+        return resp;
     }
 
 

@@ -62,18 +62,23 @@ public class UserController {
     public String create(@RequestBody String user) throws IOException {
         JsonNode rootNode = Processor.toJson(user);
         String id = rootNode.path("id").toString().replace("\"", "");
+        String resp = "";
         if (StringUtils.isEmpty(id)){
-            return userService.create(user, id);
+            resp =  userService.create(user, id);
         }else {
-            return userService.create(user);
+            resp = userService.create(user);
         }
+        Processor.errorHandler(resp);
+        return resp;
     }
 
 
     @PostMapping("/users/update")
     public String update(@RequestBody String user) throws IOException {
         JsonNode rootNode = Processor.toJson(user);
-        return userService.update(rootNode.path("id").toString().replace("\"", ""), rootNode.toString());
+        String resp = userService.update(rootNode.path("id").toString().replace("\"", ""), rootNode.toString());
+        Processor.errorHandler(resp);
+        return resp;
     }
 
 

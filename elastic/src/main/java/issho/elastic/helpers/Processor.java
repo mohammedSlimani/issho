@@ -11,9 +11,10 @@ public class Processor {
 
 
 
-    public static void errorHandler(String resp){
-        if ( resp.contains("ERROR 503") ){
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, resp.replace("ERROR 503:", ""));
+    public static void errorHandler(String resp) throws JsonProcessingException {
+        JsonNode node = toJson(resp);
+        if ( node.path("status").asInt() == 503 ){
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, node.path("message").toString());
         }
     }
 
@@ -21,4 +22,9 @@ public class Processor {
     public static JsonNode toJson(String resp) throws JsonProcessingException {
         return  new ObjectMapper().readTree((resp));
     }
+
+    public static String constructResp(Integer status, String message) {
+        return  "{ \"status\": " + status + ", \"message\": "+ message + "}";
+    }
+
 }
