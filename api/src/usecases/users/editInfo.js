@@ -7,7 +7,7 @@ export default function makeEditInfo ({usersDb}) {
         }
 
         const existingUser = await usersDb.findById({id});
-        if(!existingUser){
+        if(!existingUser || Object.entries(existingUser).length === 0){
             throw new Error("The user you want to edit doesnt exist");
         }
 

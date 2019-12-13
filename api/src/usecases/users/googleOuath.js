@@ -10,7 +10,7 @@ export default function makeGoogleOuath({usersDb}) {
         }
 
         const exists = await usersDb.findByEmail({email});
-        if(exists){
+        if(exists && Object.entries(exists).length !== 0){
             //then an already existing user is trying to link his googleAccount
             return usersDb.update({
                 id: exists.id,
