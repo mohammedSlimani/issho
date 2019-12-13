@@ -14,7 +14,7 @@ export default function makeDeletePost({ postsDb }) {
 
         const exist = await postsDb.findById({ id });
 
-        if (!exist) {
+        if (!exist || Object.entries(exist).length === 0) {
             throw new Error("post to delete doesnt exist");
         }
 

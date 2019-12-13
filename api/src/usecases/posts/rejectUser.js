@@ -10,12 +10,12 @@ export default function makeRejectUser ({usersDb, postsDb}) {
         }
 
         const existingUser = await usersDb.findById({id: userId});
-        if(!existingUser){
+        if(!existingUser || Object.entries(existingUser).length === 0){
             throw new Error("The user you are trying to approve doesnt exist");
         }
 
         const existingPost = await postsDb.findById({id: postId});
-        if(!existingPost){
+        if(!existingPost || Object.entries(existingPost).length === 0){
             throw new Error("the post you are trying to access doesnt exist");
         }
 
