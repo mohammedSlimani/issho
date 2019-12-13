@@ -9,7 +9,7 @@ export default function makeSearchUserController ({searchUser}) {
 
             return {
                 headers,
-                statusCode: 201,
+                statusCode: 200,
                 body: { ...user }
             };
         } catch (e) {

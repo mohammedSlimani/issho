@@ -10,7 +10,7 @@ export default function makeEditUserController ({editUser}) {
 
             return {
                 headers,
-                statusCode: 201,
+                statusCode: 200,
                 body: { ...user }
             };
         } catch (e) {

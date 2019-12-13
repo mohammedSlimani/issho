@@ -1,7 +1,7 @@
 # Api Microservice
 
 ## How to run the server on your machine
-
+### Without Docker
 - First make sure you are on the directory API then install the dependencies:
 ```
 yarn install
@@ -9,6 +9,15 @@ yarn install
 - Run the server of the elastic search, Check the readme under the directory ``elastic`` then start the server:
 ```
 yarn start
+```
+### With Docker
+- Make sure you are in the directory api and build the docker images
+```
+docker build -t api .
+```
+- then run your docker image
+```
+docker run -p 3000:3000 api
 ```
 
 - That's it!! You can use Postman, or insomnia to Test the routes

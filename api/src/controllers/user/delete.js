@@ -10,7 +10,7 @@ export default function makeDeleteUserController ({deleteUser}) {
 
             return {
                 headers,
-                statusCode: 201,
+                statusCode: 204,
                 body: { ...user }
             };
         } catch (e) {

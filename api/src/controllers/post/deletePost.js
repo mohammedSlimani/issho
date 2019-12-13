@@ -13,7 +13,7 @@ export default function makeDeletePostController({deletePost}) {
 
             return {
                 headers,
-                statusCode: 201,
+                statusCode: 204,
                 body: { ...post }
             };
         } catch (e) {
