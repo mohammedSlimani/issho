@@ -9,12 +9,12 @@ export default function makeEditPost({postsDb, usersDb}) {
             throw new Error("you must supply the id of the post you want to edit");
         }
         const existingUser = await usersDb.findById({id: authorId});
-        if(!existingUser){
+        if(!existingUser || Object.entries(existingUser).length === 0){
             throw new Error("the user trying to edit this post doesnt exist");
         }
 
         const existingPost = await postsDb.findById({id});
-        if(!existingPost){
+        if(!existingPost || Object.entries(existingPost).length === 0){
             throw new Error("the Post you are trying to edit doesnt exist");
         }
 

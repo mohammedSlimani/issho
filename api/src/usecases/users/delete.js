@@ -7,7 +7,7 @@ export default function makeDeleteUser({usersDb}) {
         }
 
         const existingUser = await usersDb.findById({id});
-        if(!existingUser){
+        if(!existingUser || Object.entries(existingUser).length === 0 ){
             throw new Error("The user you are trying to delete doesnt exist");
         }
 

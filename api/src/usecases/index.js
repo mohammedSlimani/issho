@@ -25,7 +25,7 @@ const singIn = makeSignIn({usersDb, compare: PwdAlgo.compare});
 const signUp = makeSignUp({usersDb});
 
 //Posts UseCases
-const addPost = makeAddPost({postsDb});
+const addPost = makeAddPost({postsDb, usersDb});
 const approveUser = makeApproveUser({postsDb,usersDb});
 const deletePost = makeDeletePost({postsDb});
 const editPost = makeEditPost({usersDb, postsDb});
