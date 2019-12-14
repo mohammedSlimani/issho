@@ -21,7 +21,7 @@ docker run -p 3000:3000 api
 ```
 
 - That's it!! You can use Postman, or insomnia to Test the routes
-
+- You can Import the insomnia routes under the directory `/documentation/api` and make life easy for yourself
 # Routes:
 - The root of the api is the address where it is deployed
 - For example, When you are running localy it is localhost:3000 

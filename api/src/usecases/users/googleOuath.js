@@ -19,7 +19,7 @@ export default function makeGoogleOuath({usersDb}) {
             })
         }else{
             //we are dealing with a new user
-            const user = await makeUser({
+            const user = makeUser({
                 email,
                 name,
                 googleId,

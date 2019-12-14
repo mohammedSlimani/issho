@@ -3,8 +3,6 @@ import PassAlgo from "../../utils/PwdAlgo";
 import makeBuildUser from "./user";
 import validator from "email-validator";
 
-const crypt = PassAlgo.encrypt;
-
-const makeUser = makeBuildUser({ Id, crypt, validator });
+const makeUser = makeBuildUser({ Id, validator });
 
 export default makeUser;
