@@ -11,7 +11,7 @@ export default function makeEditInfo ({usersDb}) {
             throw new Error("The user you want to edit doesnt exist");
         }
 
-        const updatedUser = await makeUser({id: id, existingUser, ...changes});
+        const updatedUser = await makeUser({id: id, ...existingUser, ...changes});
 
         return usersDb.update({
             id:updatedUser.getId(),

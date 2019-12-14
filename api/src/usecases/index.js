@@ -19,10 +19,11 @@ import makeUnsubscribeUser from "./posts/unsubscribeUser";
 const deleteUser = makeDeleteUser({usersDb});
 const editInfo = makeEditInfo({usersDb});
 const googleOuath = makeGoogleOuath({usersDb});
+
 //TODO: Reset Password
 const searchUser = makeSearchUser({usersDb});
 const singIn = makeSignIn({usersDb, compare: PwdAlgo.compare});
-const signUp = makeSignUp({usersDb});
+const signUp = makeSignUp({usersDb, crypt: PwdAlgo.encrypt});
 
 //Posts UseCases
 const addPost = makeAddPost({postsDb, usersDb});
