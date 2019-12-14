@@ -45,7 +45,7 @@ public class UserService extends ElasticCrud {
 
         SearchRequest searchRequest = new SearchRequest(this.index);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchPhraseQuery("name", name));
+        searchSourceBuilder.query(QueryBuilders.matchQuery("name", name)  );
         searchRequest.source(searchSourceBuilder);
 
         SearchHits searchHits = this.client.search(searchRequest, RequestOptions.DEFAULT).getHits();
@@ -57,7 +57,7 @@ public class UserService extends ElasticCrud {
         if (hits.size() == 0){
             return  Processor.constructResp(200, new ObjectMapper().readTree("{}") );
         }
-        return  Processor.constructResp(200, hits.get(0) );
+        return  Processor.constructResp(200, hits );
 
     }
 }
