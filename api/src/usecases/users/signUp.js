@@ -24,7 +24,8 @@ export default function makeSignUp({ usersDb, crypt }) {
             pwd: user.getPwd(),
             googleId: user.getGoogleId(),
             approved: user.getApproved(),
-            imgUrl: user.getImgUrl()
+            imgUrl: user.getImgUrl(),
+            deleted: user.getDeleted()
         });
     };
 }

@@ -8,7 +8,7 @@ export default function makePostsDb (){
         insert,
     });
     async function findById({id}){
-        const response =  await ESService.getUserById(id)
+        const response =  await ESService.getUserById(id);
         return response.message.constructor.name === "String" ? {}: response.message
 
     }
@@ -23,7 +23,7 @@ export default function makePostsDb (){
 
     }
     async function update(postInfo){
-        const response =  await ESService.updatePost(postInfo)
+        const response =  await ESService.updatePost(postInfo);
         return response.message.constructor.name === "String" ? {}: response.message
 
     }
