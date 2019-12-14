@@ -14,7 +14,7 @@
       <ion-col size-md="6" offset-md="3">
         
         <ion-list> 
-          <ion-item *ngIf="false">
+          <ion-item *ngIf="! isLogin">
             <ion-label position="floating">name</ion-label>
             <ion-input type="text" formControlName="name"></ion-input>
           </ion-item>

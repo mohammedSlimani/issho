@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AuthService, AuthResData } from './auth.service';
+import { AuthService} from './auth.service';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { UserService } from '../user/user.service';
@@ -30,8 +30,6 @@ export class AuthPage implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     private loadingCtl: LoadingController,
-    private userService: UserService,
-    private http: HttpClient
   ) {}
 
   ngOnInit() {
@@ -71,39 +69,35 @@ export class AuthPage implements OnInit, OnDestroy {
       .create({ keyboardClose: true, message: 'loading...' })
       .then(loadingEl => {
         loadingEl.present();
-        let authObs: Observable<AuthResData>;
         if (this.isLogin) {
+
           // login
-          authObs = this.authService.login(
+          this.authService.login(
             this.form.value.email,
             this.form.value.pwd
-          );
-          authObs.subscribe(resData => {
+          ).subscribe(resData => {
             console.log(resData);
-          })
+
+            this.isLoading = false;
+            loadingEl.dismiss();
+            this.router.navigateByUrl('/posts/tabs/discover');
+          });
         } else {
+
           // signup
           this.authService.signup(
             this.form.value.email,
-            this.form.value.pwd
-          ).pipe(
-            switchMap( resData => {
-              console.log(resData);
-              // create user
-              return this.userService.create(
-                new User(resData.localId, resData.email, resData.email)
-              );
-            })
+            this.form.value.pwd,
+            this.form.value.name
           ).subscribe( () => {
             console.log('user created');
+
+            this.isLoading = false;
+            loadingEl.dismiss();
+            this.router.navigateByUrl('/posts/tabs/discover');
           });
         }
 
-        setTimeout(() => {
-          this.isLoading = false;
-          loadingEl.dismiss();
-          this.router.navigateByUrl('/posts/tabs/discover');
-        }, 1500);
       });
   }
 
