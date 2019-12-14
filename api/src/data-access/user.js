@@ -13,18 +13,23 @@ export default function makeUsersDb (){
         throw new Error('Remove User To be implemented!');
     }
     async function findById({id}){
-        return await ESService.getUserById(id);
+        const response =  await ESService.getUserById(id);
+        return response.message
     }
     async function findByEmail({email}){
-        return await ESService.getUserByEmail(email);
+        const response = await ESService.getUserByEmail(email);
+        return response.message
     }
     async function insert(userInfo){
-        return await ESService.createUser(userInfo);
+        const response = await ESService.createUser(userInfo);
+        return response.message
     }
     async function update(changes){
-        return await ESService.updateUser(changes);
+        const response = await ESService.updateUser(changes);
+        return response.message
     }
     async function search({ name }){
-         return await ESService.getUserByName(name);
+       const response = await ESService.getUserByName(name);
+         return response.message
     }
 }
