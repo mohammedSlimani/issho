@@ -37,17 +37,19 @@ export class PostService implements Crud<Post[]> {
         if (!userId) {
           throw new Error('no user found');
         }
-        post.userId = userId;
-        return this.http.post<{ name: string }>(
-          'https://issho-7539b.firebaseio.com/posts.json',
+        post.authorId = userId;
+        return this.http.post<Post>(
+          'http://localhost:3000/posts',
           {
-            ...post,
-            id: null
+            authorId: post.authorId,
+            title: post.title,
+            des: post.des
           }
         );
       }),
       switchMap(resData => {
-        generatedId = resData.name;
+        generatedId = resData.id;
+        console.log(generatedId);
         return this.posts;
       }),
       take(1),

@@ -76,9 +76,9 @@ export class EditPostPage implements OnInit, OnDestroy {
                 this.form.value.title,
                 this.form.value.description,
                 this.post.imgUrl,
-                this.post.userId,
+                this.post.authorId,
                 this.post.date,
-                this.post.loc) )
+                this.post.location) )
           .subscribe( () => {
             loadingEl.dismiss();
             this.form.reset();
