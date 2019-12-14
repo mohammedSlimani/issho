@@ -87,7 +87,7 @@ otherwise elasticsearch will define its own id
 | root  | description |
 | ------------- | ------------- |
 | ` /posts/all `  | get all posts  |
-| ` /bookings/id{id} `  | returns post by id  |
+| ` /posts/id{id} `  | returns post by id  |
 | ` /posts/userId{userId} `  | get posts by userId  |
 
 
