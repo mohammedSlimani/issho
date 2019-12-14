@@ -6,6 +6,7 @@ import { User } from '../../models/user.model';
 import { LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { take, switchMap } from 'rxjs/operators';
+import { error } from 'util';
 
 @Component({
   selector: 'app-edit-user',
@@ -63,23 +64,28 @@ export class EditUserPage implements OnInit {
     this.loadingCtl.create({keyboardClose: true, message: 'editing your information'})
         .then(loadingEl => {
           loadingEl.present();
-
           let myId: string;
-          this.authService.userId.pipe(
-             switchMap(userId => {
-               if (!userId) {
-                 throw Error('no user found');
-               }
-               myId = userId;
-               return this.userService.update(
-                 new User(myId, this.form.value.email, this.form.value.name)
-               );
-             })
-           ).subscribe( () => {
-             loadingEl.dismiss();
-             this.router.navigate(['/', 'user', myId]);
-           });
 
+
+          this.authService.userId
+            .pipe(
+              take(1),
+              switchMap(userId => {
+                if (!userId) {
+                  throw new error('no user found');
+                }
+                myId = userId;
+                return this.authService.update(
+                  this.form.value.name,
+                  this.form.value.email
+                );
+              })
+            )
+            .subscribe(() => {
+              loadingEl.dismiss();
+              console.log(myId);
+              this.router.navigate(['/', 'user', myId]);
+            });
         });
   }
 

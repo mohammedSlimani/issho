@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { User } from '../models/user.model';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, take, switchMap } from 'rxjs/operators';
 
 
 
@@ -89,6 +89,33 @@ export class AuthService {
           );
         })
       );
+  }
+
+  update(nam: string, emal: string) {
+    let updatedUser: User;
+    return this.user.pipe(
+      take(1),
+      switchMap(usr => {
+        updatedUser = {...usr};
+        updatedUser.name = nam;
+        updatedUser.email = emal;
+        console.log(updatedUser, usr.id);
+        return this.http.patch<User>(`http://localhost:3000/users/${usr.id}`,
+        {
+          id: updatedUser.id,
+          name: updatedUser.name,
+          email: updatedUser.email,
+          pwd: updatedUser.pwd,
+          googleId: updatedUser.googleId,
+          approved: updatedUser.approved,
+          imgUrl: updatedUser.imgUrl,
+          deleted: updatedUser.deleted
+        });
+      }),
+      tap(() => {
+        this._user.next(updatedUser);
+      })
+    );
   }
 
   logout() {
