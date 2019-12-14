@@ -1,5 +1,6 @@
 package issho.elastic.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -11,7 +12,9 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import issho.elastic.helpers.*;
 public class UserService extends ElasticCrud {
 
     public UserService(String index) throws IOException {
@@ -28,14 +31,14 @@ public class UserService extends ElasticCrud {
 
         SearchHits searchHits = this.client.search(searchRequest, RequestOptions.DEFAULT).getHits();
 
-        List<String> hits = new ArrayList<String>();
+        List<Map> hits = new ArrayList<Map>();
         for (SearchHit hit : searchHits) {
-            hits.add(hit.getSourceAsString());
+            hits.add(hit.getSourceAsMap());
         }
         if (hits.size() == 0){
-            return "{}";
+            return  Processor.constructResp(200, new ObjectMapper().readTree("{}") );
         }
-        return hits.get(0);
+        return  Processor.constructResp(200, hits.get(0) );
     }
 
     public String getByName(String name) throws IOException {
@@ -46,15 +49,15 @@ public class UserService extends ElasticCrud {
         searchRequest.source(searchSourceBuilder);
 
         SearchHits searchHits = this.client.search(searchRequest, RequestOptions.DEFAULT).getHits();
-        List<String> hits = new ArrayList<String>();
+        List<Map> hits = new ArrayList<Map>();
         for (SearchHit hit : searchHits) {
-            hits.add(hit.getSourceAsString());
+            hits.add(hit.getSourceAsMap());
         }
 
         if (hits.size() == 0){
-            return "{}";
+            return  Processor.constructResp(200, new ObjectMapper().readTree("{}") );
         }
-        return hits.get(0);
+        return  Processor.constructResp(200, hits.get(0) );
 
     }
 }

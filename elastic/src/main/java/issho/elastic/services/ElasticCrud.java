@@ -3,12 +3,14 @@ package issho.elastic.services;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.internal.filter.ValueNode;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.elasticsearch.action.admin.indices.refresh.RefreshRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
@@ -26,10 +28,13 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 
+import java.io.DataInput;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import issho.elastic.helpers.*;
 
 public abstract class ElasticCrud {
@@ -90,10 +95,10 @@ public abstract class ElasticCrud {
         request.source(object, XContentType.JSON);
         IndexResponse res =  this.client.index(request, RequestOptions.DEFAULT);
         this.refresh();
-        if (res.getResult().toString() == "CREATED"){
-            return  "CREATED";
+        if (res.getResult().toString() == "CREATED" || res.getResult().toString() == "UPDATED"){
+            return  Processor.constructResp(200, new ObjectMapper().readValue(object, Map.class) );
         }
-        return Processor.constructResp(503, res.toString());
+        return Processor.constructResp(503, res);
     }
 
     public String create(String object, String id) throws IOException {
@@ -101,23 +106,23 @@ public abstract class ElasticCrud {
         request.source(object, XContentType.JSON);
         IndexResponse res =  this.client.index(request, RequestOptions.DEFAULT);
         this.refresh();
-        if (res.getResult().toString() == "CREATED"){
-            return  "CREATED ";
+        if (res.getResult().toString() == "CREATED" || res.getResult().toString() == "UPDATED"){
+            return  Processor.constructResp(200, new ObjectMapper().readValue(object, Map.class) );
         }
-        return Processor.constructResp(503, res.toString());
+        return Processor.constructResp(503, res);
     }
 
-    public List<String> read() throws IOException {
+    public String read() throws IOException {
         SearchRequest searchRequest = new SearchRequest(this.index);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(QueryBuilders.matchAllQuery()).size( 100 );
         searchRequest.source(searchSourceBuilder);
         SearchHits searchHits = this.client.search(searchRequest, RequestOptions.DEFAULT).getHits();
-        List<String> hits = new ArrayList<String>();
+        List<Map> hits = new ArrayList<Map>();
         for (SearchHit hit : searchHits) {
-            hits.add(hit.getSourceAsString());
+            hits.add(hit.getSourceAsMap() );
         }
-        return hits;
+        return Processor.constructResp(200, hits);
     }
 
     public String update(String id, String object) throws IOException {
@@ -127,9 +132,9 @@ public abstract class ElasticCrud {
         IndexResponse res =  this.client.index(request, RequestOptions.DEFAULT);
         this.refresh();
         if (res.getResult().toString() == "UPDATED"){
-            return "UPDATED ";
+            return Processor.constructResp(200, res.getResult());
         }
-        return Processor.constructResp(503, res.toString());
+        return Processor.constructResp(503, res);
     }
 
 
@@ -140,9 +145,9 @@ public abstract class ElasticCrud {
         DeleteResponse res = this.client.delete(request, RequestOptions.DEFAULT);
         this.refresh();
         if (res.getResult().toString() == "DELETED"){
-            return "DELETED";
+            return  Processor.constructResp(200, res.getResult() );
         }
-        return Processor.constructResp(503, res.toString());
+        return  Processor.constructResp(503, res.getResult() );
     }
 
     public String getById(String id) throws IOException {
@@ -151,16 +156,16 @@ public abstract class ElasticCrud {
                 id);
         GetResponse res = this.client.get(getRequest, RequestOptions.DEFAULT);
         if (res.isExists()){
-            return res.getSourceAsString();
+            return  Processor.constructResp(200, res.getSourceAsMap() );
         }
-        return Processor.constructResp(503, res.toString());
+        return Processor.constructResp(503, res.getSourceAsMap() );
     }
 
 
     public String exists(String id) throws  IOException{
         GetRequest getRequest = new GetRequest( this.index, id);
         getRequest.fetchSourceContext(new FetchSourceContext(false));
-        return  Boolean.toString(this.client.exists(getRequest, RequestOptions.DEFAULT));
+        return Processor.constructResp(200, this.client.exists(getRequest, RequestOptions.DEFAULT) );
     }
 
 
