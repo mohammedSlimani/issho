@@ -43,7 +43,7 @@ export class MypostsPage implements OnInit, OnDestroy {
         })
       )
       .subscribe(posts => {
-        this.loadedPosts = posts.filter(p => p.userId === myId);
+        this.loadedPosts = posts.filter(p => p.authorId === myId);
         this.isLoading = false;
       });
   }
