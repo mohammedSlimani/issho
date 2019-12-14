@@ -17,7 +17,7 @@ export interface UserData {
   providedIn: 'root'
 })
 export class UserService implements Crud<User[]> {
-  // dummy chaning database
+
   private _users = new BehaviorSubject<User[]>([]);
 
   constructor(private http: HttpClient, private authService: AuthService) {}
@@ -26,51 +26,23 @@ export class UserService implements Crud<User[]> {
     return this._users.asObservable();
   }
 
-  // po@po.com popopopo
+  // this service doesn't create users anymore
+  // authService does
   create(user: User) {
-    return this.authService.userId.pipe(
-      switchMap(userId => {
-        console.log(user);
-        user.id = userId;
-        console.log(user);
-        return this.http.put<{ name: string }>(
-          `https://issho-7539b.firebaseio.com/users/${userId}.json`,
-          {
-            ...user
-          }
-        );
-      }),
-      switchMap(resData => {
-        console.log(resData);
-        return this.users;
-      }),
-      take(1),
-      tap(users => {
-        this._users.next(users.concat(user));
-      })
-    );
+    return this.users;
   }
 
+  // not necessary for now
   read() {
-    return this.http
-      .get<{ [key: string]: UserData }>(
-        'https://issho-7539b.firebaseio.com/users.json'
-      )
-      .pipe(
-        map(resData => {
-          const users = [];
-          for (const key in resData) {
-            if (resData.hasOwnProperty(key)) {
-              users.push(new User(key, resData[key].email, resData[key].name));
-            }
-          }
-          return users;
-        }),
-        tap(users => {
-          this._users.next(users);
-        })
-      );
+    return this._users;
   }
+
+  // you cant leave us :)
+  delete(userId: string) {
+    return this._users;
+  }
+
+
 
   update(user: User) {
     let updatedUsers: User[];
@@ -92,33 +64,19 @@ export class UserService implements Crud<User[]> {
     );
   }
 
-  delete(userId: string) {
-    return this.http
-      .delete(`https://issho-7539b.firebaseio.com/users/${userId}.json`)
-      .pipe(
-        switchMap(() => {
-          return this.users;
-        }),
-        take(1),
-        tap(users => {
-          this._users.next(users.filter(usr => usr.id !== userId));
-        })
-      );
-  }
-
   getUser(userId: string) {
-   /*
-    return this.http
-      .get<UserData>(`https://issho-7539b.firebaseio.com/users/${userId}.json`)*/
-      return this.http.post('http://localhost:3000/users/signin', {email: 'sldssssdss@gmail.com', pwd: 'wtfwtf'}).pipe(
-        map((resData: User) => {
-          // let user: User;
-          // user = new User(userId, resData.email, resData.name);
-          console.log('resData', resData);
-          // return new User(resData.id, resData.email, resData.name);
-          const {id, email, name} = resData;
-          return new User(id, email, name);
-        })
-      );
+    // for now returns my account data
+    return this.authService.user;
+
+    /*
+      return this.http
+        .post<User>('http://localhost:3000/users/signin', {pwd: 'hellobae', email: 'mouhcined@gmail.com'})
+        .pipe(
+          map((resData) => {
+            console.log('resData', resData);
+            return new User(resData.id, resData.name, resData.email);
+          })
+        );
+      */
   }
 }

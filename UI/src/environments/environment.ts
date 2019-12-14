@@ -4,7 +4,8 @@
 
 export const environment = {
          production: false,
-         fireApi: 'AIzaSyDQcR6EO_YacVI6PVqYlWGp0d1qAA9gf-M'
+         fireApi: 'AIzaSyDQcR6EO_YacVI6PVqYlWGp0d1qAA9gf-M',
+         apiRoot: 'http://localhost:3000/'
        };
 
 /*
