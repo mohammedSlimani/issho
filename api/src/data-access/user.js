@@ -14,22 +14,22 @@ export default function makeUsersDb (){
     }
     async function findById({id}){
         const response =  await ESService.getUserById(id);
-        return response.message
+        return response.message.constructor.name === "String" ? {}: response.message
     }
     async function findByEmail({email}){
         const response = await ESService.getUserByEmail(email);
-        return response.message
+        return response.message.constructor.name === "String" ? {}: response.message
     }
     async function insert(userInfo){
         const response = await ESService.createUser(userInfo);
-        return response.message
+        return response.message.constructor.name === "String" ? {}: response.message
     }
     async function update(changes){
         const response = await ESService.updateUser(changes);
-        return response.message
+        return response.message.constructor.name === "String" ? {}: response.message
     }
     async function search({ name }){
        const response = await ESService.getUserByName(name);
-         return response.message
+        return response.message.constructor.name === "String" ? {}: response.message
     }
 }
