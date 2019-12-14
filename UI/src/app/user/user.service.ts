@@ -45,23 +45,7 @@ export class UserService implements Crud<User[]> {
 
 
   update(user: User) {
-    let updatedUsers: User[];
-    return this.users.pipe(
-      take(1),
-      switchMap(users => {
-        const updatedId = users.findIndex(usr => usr.id === user.id);
-        updatedUsers = [...users];
-        updatedUsers[updatedId] = user;
-
-        return this.http.put(
-          `https://issho-7539b.firebaseio.com/users/${user.id}.json`,
-          { ...updatedUsers[updatedId], id: null }
-        );
-      }),
-      tap(() => {
-        this._users.next(updatedUsers);
-      })
-    );
+    return this.users;
   }
 
   getUser(userId: string) {
