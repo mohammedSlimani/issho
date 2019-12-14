@@ -6,9 +6,11 @@ services:
         build: './api'
         ports: 
             - "3000:3000"
+        network_mode: host
     
     elasticspring:
         build: './elastic'
         ports:
             - "8080:8080"
+        network_mode: host
 
