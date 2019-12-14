@@ -11,7 +11,7 @@ export default function makeSignUp({ usersDb, crypt }) {
         }
 
         const encryptedPwd = await crypt(pwd);
-        const user = await makeUser({ email, pwd: encryptedPwd, name });
+        const user = makeUser({ email, pwd: encryptedPwd, name });
 
         //WE can Do some Data Analyse or spam detection before approving the user in
         //this stage
