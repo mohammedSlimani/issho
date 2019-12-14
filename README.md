@@ -5,4 +5,5 @@ The Face Of the Facebook
 - Organaize events In a very straight forward way.
 - Expolre yourself as individual. Do new stuff everyday.
 
-
+## Run Backout ( api + elasticspring )
+`docker-compose up --build`
