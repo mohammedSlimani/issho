@@ -1,7 +1,7 @@
 const NOIMAGE = "https://www.clipartwiki.com/clipimg/detail/197-1979569_no-profile.png"
 
 export default function BuildMakeUser({Id, crypt, validator}) {
-    return async function makeUser({
+    return function makeUser({
                                        id = Id.makeId(),
                                        name,
                                        pwd,
@@ -24,11 +24,11 @@ export default function BuildMakeUser({Id, crypt, validator}) {
             throw new Error("user ID id not valid")
         }
 
-        let encryptedPwd = await crypt(pwd);
+        //let encryptedPwd = await crypt(pwd);
 
         return Object.freeze({
             getName: () => name,
-            getPwd: () => encryptedPwd,
+            getPwd: () => pwd,
             getEmail: () => email.toLowerCase(),
             getApproved : () => approved,
             getId: () => id,

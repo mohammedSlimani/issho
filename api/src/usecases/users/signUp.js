@@ -1,6 +1,6 @@
 import { makeUser } from "../../entities";
 
-export default function makeSignUp({ usersDb }) {
+export default function makeSignUp({ usersDb, crypt }) {
     return async function signUp({ email, name, pwd } ) {
         if (!pwd) {
             throw new Error("Need to provide a password for the Local signup");
@@ -10,7 +10,8 @@ export default function makeSignUp({ usersDb }) {
             throw new Error("User Already exist");
         }
 
-        const user = await makeUser({ email, pwd, name });
+        const encryptedPwd = await crypt(pwd);
+        const user = await makeUser({ email, pwd: encryptedPwd, name });
 
         //WE can Do some Data Analyse or spam detection before approving the user in
         //this stage
