@@ -3,7 +3,8 @@ const API_ROOT ='http://localhost:8080';
 const TIMEOUT = 60000;
 const HEADERS = {
     'Accept': 'application/json',
-    'Access-Control-Allow-Origin': '*'
+    'Access-Control-Allow-Origin': '*',
+    'authorization':'hehexd'
 };
 
 class ApiService {
