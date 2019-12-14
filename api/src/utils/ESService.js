@@ -11,7 +11,7 @@ const getAllUser =  () =>{
     return Api.get("/users/all");
 };
 const getUserById = (id) => {
-    console.log('getting the user with the id;', id);
+    console.log('getting the user with the id:', id);
     return Api.get(`/users/id?id=${id}`);
 };
 const getUserByEmail = (email) => {
@@ -39,6 +39,10 @@ const updateUser = (changes) => {
 const getAllPosts = () => {
     console.log('getting all the posts');
     return Api.get("/posts/all")
+};
+const getPostById = (id) => {
+    console.log("Getting post by id:", id);
+    return Api.get(`/posts/id?id=${id}`)
 };
 const getPostsByUserId = (userId) => {
     console.log('getting the posts of the user with id : ', userId);
@@ -68,6 +72,7 @@ const ESService = Object.freeze({
     getPostsByUserId,
     createPost,
     updatePost,
-    deletePost
+    deletePost,
+    getPostById
 });
 export default ESService;
