@@ -1,6 +1,7 @@
 package issho.elastic.services;
 
 
+import issho.elastic.helpers.Processor;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class PostService extends ElasticCrud{
@@ -33,11 +35,11 @@ public class PostService extends ElasticCrud{
         searchSourceBuilder.query(QueryBuilders.matchPhraseQuery("userId", userId));
         searchRequest.source(searchSourceBuilder);
         SearchHits searchHits = this.client.search(searchRequest, RequestOptions.DEFAULT).getHits();
-        List<String> hits = new ArrayList<String>();
+        List<Map> hits = new ArrayList<Map>();
         for (SearchHit hit : searchHits) {
-            hits.add(hit.getSourceAsString());
+            hits.add(hit.getSourceAsMap());
         }
-        return hits.toString();
+        return Processor.constructResp(200, hits);
     }
 
 

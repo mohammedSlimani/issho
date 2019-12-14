@@ -1,11 +1,15 @@
 package issho.elastic.helpers;
 
+
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.internal.filter.ValueNode;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Processor {
 
@@ -23,8 +27,12 @@ public class Processor {
         return  new ObjectMapper().readTree((resp));
     }
 
-    public static String constructResp(Integer status, String message) {
-        return  "{ \"status\": " + status + ", \"message\": "+ message + "}";
+    public static String constructResp(Integer status, Object message) throws JsonProcessingException {
+        Map<String,Object> resp = new HashMap<>();
+        resp.put("status",status);
+        resp.put("message",message);
+        String json = new ObjectMapper().writeValueAsString(resp);
+        return  json;
     }
 
 }
