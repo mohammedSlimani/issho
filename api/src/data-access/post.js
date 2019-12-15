@@ -6,6 +6,7 @@ export default function makePostsDb (){
         search,
         update,
         insert,
+        getAll
     });
     async function findById({id}){
         const response =  await ESService.getPostById(id);
@@ -30,5 +31,10 @@ export default function makePostsDb (){
         console.log("post update resp:", response);
         return response.message.constructor.name === "String" ? {}: response.message
 
+    }
+    async function getAll(){
+        const response =  await ESService.getAllPosts();
+        console.log("post getAll resp:", response);
+        return response.message.constructor.name === "String" ? {}: response.message
     }
 }
