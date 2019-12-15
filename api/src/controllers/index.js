@@ -13,6 +13,9 @@ import makeGoogleOuathController from "./user/googleOuath";
 import makeSearchUserController from "./user/searchUser";
 import makeSignInController from "./user/signIn";
 import makeSignUpController from "./user/signUp";
+import makeAllPostsController from "./post/allPosts";
+import makePostsOfUserController from "./post/postsOfUser";
+import makePostByIdController from "./post/postById";
 
 //Post Controllers
 const addPost = makeAddPostController({addPost:postService.addPost});
@@ -23,6 +26,9 @@ const rejectUser = makeRejectUserController({rejectUser:postService.rejectUser})
 const searchPost = makeSearchPostController({searchPost: postService.searchPost});
 const subscribeUser = makeSubscribeUserController({subscribeUser:postService.subscribeUser});
 const unsubscribeUser = makeUnsubscribeUserController({unsubscribeUser:postService.unsubscribeUser});
+const allPosts = makeAllPostsController({allPosts: postService.allPosts});
+const postsOfUser = makePostsOfUserController({postsOfUser: postService.postsOfUser});
+const postById = makePostByIdController({postById: postService.postById})
 
 //UserControllers
 const deleteUser = makeDeleteUserController({deleteUser:userService.deleteUser});
@@ -50,7 +56,10 @@ const postControllers = Object.freeze({
     rejectUser,
     searchPost,
     subscribeUser,
-    unsubscribeUser
+    unsubscribeUser,
+    allPosts,
+    postsOfUser,
+    postById
 });
 
 export{

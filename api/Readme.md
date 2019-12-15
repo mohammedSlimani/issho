@@ -91,6 +91,21 @@ POST $API_ROOT/posts
 }
 ```
 
+- get All Posts
+```
+GET $API_ROOT/posts
+```
+
+- Get User's Posts by the user Id
+```
+GET $API_ROOT/posts/user/:userId
+```
+
+- Get Post By Id 
+```
+GET $API_ROOT/posts/:id
+``` 
+
 - Approve User
 ```
 POST $API_ROOT/posts/approve
