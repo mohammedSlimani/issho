@@ -16,6 +16,7 @@ import makeSubscribeUser from "./posts/subscribeUser";
 import makeUnsubscribeUser from "./posts/unsubscribeUser";
 import makeAllPosts from "./posts/allPosts";
 import makePostsOfUser from "./posts/postsOfUser";
+import makePostById from "./posts/postById";
 
 //Users UseCases
 const deleteUser = makeDeleteUser({usersDb});
@@ -37,7 +38,8 @@ const searchPost = makeSearchPost({postsDb});
 const subscribeUser = makeSubscribeUser({usersDb, postsDb});
 const unsubscribeUser = makeUnsubscribeUser({usersDb, postsDb});
 const allPosts = makeAllPosts({postsDb});
-const postsOfUser =  makePostsOfUser({postsDb});
+const postsOfUser = makePostsOfUser({postsDb});
+const postById = makePostById({postsDb});
 
 const userService = Object.freeze({
     deleteUser,
@@ -58,7 +60,8 @@ const postService = Object.freeze({
     subscribeUser,
     unsubscribeUser,
     allPosts,
-    postsOfUser
+    postsOfUser,
+    postById
 });
 
 export {
