@@ -14,6 +14,7 @@ import makeSearchUserController from "./user/searchUser";
 import makeSignInController from "./user/signIn";
 import makeSignUpController from "./user/signUp";
 import makeAllPostsController from "./post/allPosts";
+import makePostsOfUserController from "./post/postsOfUser";
 
 //Post Controllers
 const addPost = makeAddPostController({addPost:postService.addPost});
@@ -25,6 +26,7 @@ const searchPost = makeSearchPostController({searchPost: postService.searchPost}
 const subscribeUser = makeSubscribeUserController({subscribeUser:postService.subscribeUser});
 const unsubscribeUser = makeUnsubscribeUserController({unsubscribeUser:postService.unsubscribeUser});
 const allPosts = makeAllPostsController({allPosts: postService.allPosts});
+const postsOfUser = makePostsOfUserController({postsOfUser: postService.postsOfUser});
 
 //UserControllers
 const deleteUser = makeDeleteUserController({deleteUser:userService.deleteUser});
@@ -53,7 +55,8 @@ const postControllers = Object.freeze({
     searchPost,
     subscribeUser,
     unsubscribeUser,
-    allPosts
+    allPosts,
+    postsOfUser
 });
 
 export{

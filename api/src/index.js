@@ -35,7 +35,7 @@ app.post("/posts/search", makeCallback(postControllers.searchPost));
 app.post("/posts/subscribe", makeCallback(postControllers.subscribeUser));
 app.post("/posts/unsubscribe", makeCallback(postControllers.unsubscribeUser));
 app.get("/posts", makeCallback(postControllers.allPosts));
-//app.get("/posts/user/:userId", makeCallback(postControllers.postsOfUser));
+app.get("/posts/user/:userId", makeCallback(postControllers.postsOfUser));
 //app.get("/posts/:id", makeCallback(postControllers.postById));
 
 const pst = app.listen(3000, () => {
