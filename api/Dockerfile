@@ -4,7 +4,7 @@ FROM node:10
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-
+# RUN npm cache clean --force
 RUN npm install -g nodemon @babel/core @babel/node @babel/preset-env
 
 RUN npm install
