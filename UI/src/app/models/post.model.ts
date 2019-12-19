@@ -7,7 +7,7 @@ export class Post {
            public des: string,
            public imgUrl: string,
            public authorId: string,
-           public date: Date,
+           public date: Date = new Date(),
            public location: string = 'Rabat',
            public dateAdded: number = new Date().getTime(),
            public approved: boolean = false,

@@ -39,8 +39,7 @@ export class MypostsPage implements OnInit, OnDestroy {
             throw Error('no user found');
           }
           myId = userId;
-          return this.postService.read();
-          // return this.postService.getPostsByUser(userId);
+          return this.postService.getPostsByUser(userId);
         })
       )
       .subscribe(posts => {
@@ -49,6 +48,8 @@ export class MypostsPage implements OnInit, OnDestroy {
       });
   }
 
+
+  // to comment if not necessary
   ionViewWillEnter() {
     this.isLoading = true;
     this.postService.getPostsByUser(this.userId).subscribe(() => {
