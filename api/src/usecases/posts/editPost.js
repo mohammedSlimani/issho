@@ -20,11 +20,14 @@ export default function makeEditPost({postsDb, usersDb}) {
 
         const updatedPost = makePost({id : existingPost.id, ...existingPost, ...changes })
 
+        console.log(existingPost, id, authorId, changes);
+
         return postsDb.update({
             id: updatedPost.getId(),
             imgUrl: updatedPost.getImgUrl(),
             authorId: updatedPost.getAuthorId(),
             des: updatedPost.getDes(),
+            title: updatedPost.getTitle(),
             dateAdded: updatedPost.getDateAdded(),
             location: updatedPost.getLocation(),
             approved: updatedPost.getApproved(),
