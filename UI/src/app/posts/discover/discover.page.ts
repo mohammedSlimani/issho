@@ -16,7 +16,6 @@ export class DiscoverPage implements OnInit, OnDestroy {
   postGoing = {};
   isLoading = false;
 
-  bookSub: Subscription;
   postSub: Subscription;
 
   constructor(
@@ -29,13 +28,6 @@ export class DiscoverPage implements OnInit, OnDestroy {
     this.postSub = this.postService.posts.subscribe(posts => {
       this.listedPosts = posts;
       this.relevantPost = posts[0];
-    });
-
-    this.bookSub = this.bookingService.bookings.subscribe(bks => {
-        this.listedPosts.forEach(p => {
-          this.postGoing[p.id] = bks.filter(bk => bk.postId === p.id).length;
-        });
-
     });
 
   }
@@ -57,9 +49,6 @@ export class DiscoverPage implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.postSub) {
       this.postSub.unsubscribe();
-    }
-    if (this.bookSub) {
-      this.bookSub.unsubscribe();
     }
   }
 

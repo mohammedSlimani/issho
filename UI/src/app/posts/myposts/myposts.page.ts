@@ -39,18 +39,19 @@ export class MypostsPage implements OnInit, OnDestroy {
             throw Error('no user found');
           }
           myId = userId;
-          return this.postService.posts;
+          return this.postService.read();
+          // return this.postService.getPostsByUser(userId);
         })
       )
       .subscribe(posts => {
-        this.loadedPosts = posts.filter(p => p.authorId === myId);
+        this.loadedPosts = posts;
         this.isLoading = false;
       });
   }
 
   ionViewWillEnter() {
     this.isLoading = true;
-    this.postService.read().subscribe(() => {
+    this.postService.getPostsByUser(this.userId).subscribe(() => {
       this.isLoading = false;
     });
   }

@@ -12,7 +12,7 @@ export class Post {
            public dateAdded: number = new Date().getTime(),
            public approved: boolean = false,
            public usersApproved: string[] = [],
-           public usersPended: string[]   = [],
+           public usersPended: string[] = [],
            public usersRejected: string[] = [],
            public deleted: boolean = false
          ) {}

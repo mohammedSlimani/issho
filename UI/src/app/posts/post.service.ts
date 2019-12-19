@@ -62,9 +62,7 @@ export class PostService implements Crud<Post[]> {
 
   read() {
     return this.http
-      .get<{ [key: string]: PostData }>(
-        'https://issho-7539b.firebaseio.com/posts.json'
-      )
+      .get<Post>('http://localhost:3000/posts')
       .pipe(
         map(resData => {
           const posts = [];
@@ -72,12 +70,12 @@ export class PostService implements Crud<Post[]> {
             if (resData.hasOwnProperty(key)) {
               posts.push(
                 new Post(
-                  key,
+                  resData[key].id,
                   resData[key].title,
                   resData[key].des,
                   resData[key].imgUrl,
                   resData[key].userId,
-                  new Date(resData[key].date),
+                  new Date(),
                   resData[key].loc
                 )
               );
@@ -100,9 +98,9 @@ export class PostService implements Crud<Post[]> {
         updatedPosts = [...posts];
         updatedPosts[updatedId] = post;
 
-        return this.http.put(
-          `https://issho-7539b.firebaseio.com/posts/${post.id}.json`,
-          { ...updatedPosts[updatedId], id: null }
+        return this.http.patch<Post>(
+          `http://localhost:3000/posts/${post.id}`,
+          { authorId: post.authorId, title: post.title, des: post.des }
         );
       }),
       tap(() => {
@@ -125,10 +123,41 @@ export class PostService implements Crud<Post[]> {
       );
   }
 
+
+  getPostsByUser(userId: string) {
+    // /posts/user/:userId
+    return this.http.get<Post>(`http://localhost:3000/posts/user/${userId}`).pipe(
+      map(resData => {
+        const posts = [];
+        for (const key in resData) {
+          if (resData.hasOwnProperty(key)) {
+            posts.push(
+              new Post(
+                resData[key].id,
+                resData[key].title,
+                resData[key].des,
+                resData[key].imgUrl,
+                resData[key].authorId,
+                new Date(resData[key].date),
+                resData[key].loc
+              )
+            );
+          }
+        }
+        return posts;
+      }),
+      tap(posts => {
+        this._posts.next(posts);
+      })
+    );
+  }
+
+
+
   getPost(postId: string) {
     return this.http
-      .get<PostData>(
-        `https://issho-7539b.firebaseio.com/posts/${postId}.json`
+      .get<Post>(
+        `http://localhost:3000/posts/${postId}`
       )
       .pipe(
         map(resData => {
@@ -138,9 +167,9 @@ export class PostService implements Crud<Post[]> {
                   resData.title,
                   resData.des,
                   resData.imgUrl,
-                  resData.userId,
-                  new Date(resData.date),
-                  resData.loc
+                  resData.authorId,
+                  new Date(),
+                  resData.location
                 );
           return post;
         })
