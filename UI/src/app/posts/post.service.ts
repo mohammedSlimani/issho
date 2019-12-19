@@ -125,7 +125,7 @@ export class PostService implements Crud<Post[]> {
         };
         // still need to send something
         return this.http
-          .delete(`http://localhost:3000/delete`, options)
+          .delete(`http://localhost:3000/posts`, options)
           .pipe(
             switchMap(() => {
               return this.posts;
