@@ -6,10 +6,12 @@ export default function makeDeletePostController({deletePost}) {
         try {
             const {
                 id,
-                userId
+                authorId
             } = httpRequest.body;
 
-            const post = await deletePost({id, userId});
+            console.log(httpRequest.body, {id, authorId});
+
+            const post = await deletePost({id, authorId});
 
             return {
                 headers,

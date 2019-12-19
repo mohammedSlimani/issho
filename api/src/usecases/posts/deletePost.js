@@ -1,7 +1,7 @@
 import {makePost} from "../../entities";
 
 export default function makeDeletePost({ postsDb }) {
-    return async function deletePost({ authorId, id }) {
+    return async function deletePost({ id, authorId }) {
         if (!id) {
             throw new Error("You must supply an Id of the post to Delete");
         }

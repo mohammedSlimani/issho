@@ -22,7 +22,7 @@ export default function BuildMakePost({Id}) {
             throw new Error("Author Id Is not valid");
         }
         if (!title) {
-            throw new Error("Post Must have a valid ID")
+            throw new Error("Post Must have a valid title")
         }
         if (!des) {
             throw new Error("Post must have a des ")
