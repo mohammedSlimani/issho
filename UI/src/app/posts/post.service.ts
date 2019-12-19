@@ -74,7 +74,7 @@ export class PostService implements Crud<Post[]> {
                   resData[key].title,
                   resData[key].des,
                   resData[key].imgUrl,
-                  resData[key].userId,
+                  resData[key].authorId,
                   new Date(),
                   resData[key].loc
                 )
@@ -97,10 +97,14 @@ export class PostService implements Crud<Post[]> {
         const updatedId = posts.findIndex(pl => pl.id === post.id);
         updatedPosts = [...posts];
         updatedPosts[updatedId] = post;
-
+        console.log( 'to be sent : ', post);
         return this.http.patch<Post>(
           `http://localhost:3000/posts/${post.id}`,
-          { authorId: post.authorId, title: post.title, des: post.des }
+          {
+            authorId: post.authorId,
+            title: post.title,
+            des: post.des,
+            id: post.id}
         );
       }),
       tap(() => {
@@ -110,17 +114,20 @@ export class PostService implements Crud<Post[]> {
   }
 
   delete(postId: string) {
-    return this.http
-      .delete(`https://issho-7539b.firebaseio.com/posts/${postId}.json`)
-      .pipe(
-        switchMap(() => {
-          return this.posts;
-        }),
-        take(1),
-        tap(posts => {
+    return this.authService.userId.pipe(
+      take(1),
+      switchMap( authorId => {
+        // still need to send something
+        return this.http.delete(`http://localhost:3000/delete`, {}).pipe(
+        switchMap( () => {
+            return this.posts;
+          }),
+          take(1),
+          tap(posts => {
           this._posts.next(posts.filter(p => p.id !== postId));
-        })
-      );
+        }));
+      })
+    );
   }
 
 
@@ -138,7 +145,7 @@ export class PostService implements Crud<Post[]> {
                 resData[key].des,
                 resData[key].imgUrl,
                 resData[key].authorId,
-                new Date(resData[key].date),
+                new Date(),
                 resData[key].loc
               )
             );
