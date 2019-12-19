@@ -11,5 +11,11 @@
     "port": 443,
     "user": "mrgm7glbc3",
     "password": "2wl1bgvk9f"
+  },
+  "dev_3":{
+    "host": "kafka-course-8169368270.eu-west-1.bonsaisearch.net",
+    "port": 443,
+    "user": "mrgm7glbc3",
+    "password": "2wl1bgvk9f"
   }
 }
