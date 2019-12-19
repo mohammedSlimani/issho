@@ -3,7 +3,7 @@ import { Post } from '../models/post.model';
 import { take, map, tap, delay, switchMap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { Crud } from '../crud';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
 
 interface PostData {
@@ -116,16 +116,25 @@ export class PostService implements Crud<Post[]> {
   delete(postId: string) {
     return this.authService.userId.pipe(
       take(1),
-      switchMap( authorId => {
-        // still need to send something
-        return this.http.delete(`http://localhost:3000/delete`, {}).pipe(
-        switchMap( () => {
-            return this.posts;
+      switchMap( userId => {
+        const options = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json'
           }),
-          take(1),
-          tap(posts => {
-          this._posts.next(posts.filter(p => p.id !== postId));
-        }));
+          body: { id: postId, authorId: userId }
+        };
+        // still need to send something
+        return this.http
+          .delete(`http://localhost:3000/delete`, options)
+          .pipe(
+            switchMap(() => {
+              return this.posts;
+            }),
+            take(1),
+            tap(posts => {
+              this._posts.next(posts.filter(p => p.id !== postId));
+            })
+          );
       })
     );
   }
