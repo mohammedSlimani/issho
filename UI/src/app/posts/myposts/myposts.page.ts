@@ -39,6 +39,7 @@ export class MypostsPage implements OnInit, OnDestroy {
             throw Error('no user found');
           }
           myId = userId;
+          console.log(myId);
           return this.postService.getPostsByUser(userId);
         })
       )
@@ -49,12 +50,23 @@ export class MypostsPage implements OnInit, OnDestroy {
   }
 
 
-  // to comment if not necessary
+
   ionViewWillEnter() {
-    this.isLoading = true;
-    this.postService.getPostsByUser(this.userId).subscribe(() => {
-      this.isLoading = false;
-    });
+    console.log('my posts again');
+    this.authService.userId
+      .pipe(
+        take(1),
+        switchMap(userId => {
+          if (!userId) {
+            throw Error('no user found');
+          }
+          return this.postService.getPostsByUser(userId);
+        })
+      )
+      .subscribe(posts => {
+        this.loadedPosts = posts;
+        this.isLoading = false;
+      });
   }
 
   ngOnDestroy() {

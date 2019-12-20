@@ -108,6 +108,7 @@ export class PostService implements Crud<Post[]> {
         );
       }),
       tap(() => {
+        console.log(updatedPosts);
         this._posts.next(updatedPosts);
       })
     );
