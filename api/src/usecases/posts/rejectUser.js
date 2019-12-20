@@ -33,7 +33,8 @@ export default function makeRejectUser ({usersDb, postsDb}) {
             usersPended: updatedPost.getUsersPended(),
             usersApproved : updatedPost.getUsersApproved(),
             usersRejected: updatedPost.getUsersRejected(),
-            deleted: updatedPost.getDeleted()
+            deleted: updatedPost.getDeleted(),
+            title:updatedPost.getTitle(),
         })
     }
 }
