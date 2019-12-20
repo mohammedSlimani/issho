@@ -67,7 +67,7 @@ export class PostDetailPage implements OnInit, OnDestroy {
            return this.postService.getPost(this.postId);
          })
        ).subscribe( pst => {
-          console.log(this.booked);
+          console.log(this.booked, pst);
           this.booked = pst.usersPended.filter(u => u === myId).length === 1;
           this.isLoading = false;
         });

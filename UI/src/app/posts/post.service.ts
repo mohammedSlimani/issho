@@ -70,8 +70,13 @@ export class PostService implements Crud<Post[]> {
                 resData[key].des,
                 resData[key].imgUrl,
                 resData[key].authorId,
-                new Date(),
-                resData[key].loc
+                new Date(resData[key].dateAdded),
+                resData[key].location,
+                resData[key].dateAdded,
+                resData[key].approved,
+                resData[key].usersApproved,
+                resData[key].usersPended,
+                resData[key].usersRejected
               )
             );
           }
@@ -147,8 +152,13 @@ export class PostService implements Crud<Post[]> {
                   resData[key].des,
                   resData[key].imgUrl,
                   resData[key].authorId,
-                  new Date(),
-                  resData[key].loc
+                  new Date(resData[key].dateAdded),
+                  resData[key].location,
+                  resData[key].dateAdded,
+                  resData[key].approved,
+                  resData[key].usersApproved,
+                  resData[key].usersPended,
+                  resData[key].usersRejected
                 )
               );
             }
@@ -171,8 +181,13 @@ export class PostService implements Crud<Post[]> {
           resData.des,
           resData.imgUrl,
           resData.authorId,
-          new Date(),
-          resData.location
+          new Date(resData.dateAdded),
+          resData.location,
+          resData.dateAdded,
+          resData.approved,
+          resData.usersApproved,
+          resData.usersPended,
+          resData.usersRejected
         );
         return post;
       })
@@ -196,7 +211,7 @@ export class PostService implements Crud<Post[]> {
         return this.http
           .post(`http://localhost:3000/posts/subscribe`, {
             postId: postid,
-            authorId: userId
+            userId: userid
           })
           .pipe(
             switchMap(() => {
@@ -232,7 +247,7 @@ export class PostService implements Crud<Post[]> {
         return this.http
           .post(`http://localhost:3000/posts/unsubscribe`, {
             postId: postid,
-            authorId: userId
+            userId: userid
           })
           .pipe(
             switchMap(() => {
@@ -252,5 +267,41 @@ export class PostService implements Crud<Post[]> {
           );
       })
     );
+  }
+
+
+
+  bookedPostByUser(userid: string) {
+        // /posts/user/:userId
+    return this.read()
+      .pipe(
+        map(resData => {
+          const posts = [];
+          for (const key in resData) {
+            if (resData.hasOwnProperty(key)) {
+              posts.push(
+                new Post(
+                  resData[key].id,
+                  resData[key].title,
+                  resData[key].des,
+                  resData[key].imgUrl,
+                  resData[key].authorId,
+                  new Date(resData[key].dateAdded),
+                  resData[key].location,
+                  resData[key].dateAdded,
+                  resData[key].approved,
+                  resData[key].usersApproved,
+                  resData[key].usersPended,
+                  resData[key].usersRejected
+                )
+              );
+            }
+          }
+          return posts;
+        }),
+        tap(posts => {
+          this._posts.next(posts.filter(pst => pst.usersPended.filter( usr => usr === userid).lenght === 1));
+        })
+      );
   }
 }
