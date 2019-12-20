@@ -93,6 +93,7 @@ export class MypostsPage implements OnInit, OnDestroy {
         loadingEl.present();
 
         this.postService.delete(postId).subscribe(() => {
+          console.log(postId);
           loadingEl.dismiss();
           console.log('onPostDelete()');
         });
