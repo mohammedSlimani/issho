@@ -31,7 +31,6 @@ export class PostDetailPage implements OnInit, OnDestroy {
     private router: Router,
     private navCtl: NavController,
     private postService: PostService,
-    private bookingService: BookingService,
     private authService: AuthService,
     ) {
       console.log('init details');
@@ -65,17 +64,11 @@ export class PostDetailPage implements OnInit, OnDestroy {
              throw new Error('no user found');
            }
            myId = userId;
-           return this.bookingService.getBookingByPost(this.postId);
+           return this.postService.getPost(this.postId);
          })
-       ).subscribe( bks => {
-          this.goin = bks.length;
-          this.booked =
-            bks.filter(bk => bk.userId === myId).length > 0;
-          if (this.booked) {
-            this.booking = bks.find(
-              bk => bk.userId === myId
-            );
-          }
+       ).subscribe( pst => {
+          console.log(this.booked);
+          this.booked = pst.usersPended.filter(u => u === myId).length === 1;
           this.isLoading = false;
         });
     });
@@ -93,13 +86,10 @@ export class PostDetailPage implements OnInit, OnDestroy {
     if (this.postSub) {
       this.postSub.unsubscribe();
     }
-    if (this.bookSub) {
-      this.bookSub.unsubscribe();
-    }
   }
 
   onUnbook() {
-    this.bookingService.delete(this.booking.id).subscribe(bks => {
+    this.postService.unbookPost(this.post.id).subscribe(() => {
       this.booked = false;
     });
   }
@@ -110,16 +100,9 @@ export class PostDetailPage implements OnInit, OnDestroy {
       return;
     }
     console.log('booking added');
-    this.bookingService
-      .create(
-        new Booking(
-          Math.random().toString(),
-          this.post.id,
-          ''
-        )
-      )
-      .subscribe(bks => {
-        this.booked = true;
-      });
+    this.postService.bookPost(this.post.id).subscribe(() => {
+      this.booked = true;
+    });
+
   }
 }
