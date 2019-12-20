@@ -24,11 +24,12 @@ export default function makeDeletePost({ postsDb }) {
 
         const updatedPost = makePost(exist);
         updatedPost.markDeleted();
-
+        
         return postsDb.update({
             id: updatedPost.getId(),
             imgUrl: updatedPost.getImgUrl(),
             authorId: updatedPost.getAuthorId(),
+            title: updatedPost.getTitle(),
             des: updatedPost.getDes(),
             dateAdded: updatedPost.getDateAdded(),
             location: updatedPost.getLocation(),

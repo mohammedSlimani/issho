@@ -18,7 +18,7 @@
     <ion-row>
       <ion-col size-md="6" offset-md="3">
         <ion-item-sliding  *ngFor="let post of loadedPosts" #slidingItem>
-              <ion-item detail>
+            <ion-item detail>
                 <ion-label>
                   <h1>{{post.title}}</h1>
                   <p>{{post.date | date}}</p>
@@ -33,8 +33,9 @@
                 <ion-item-option color="danger" (click)="onPostDelete(post.id, slidingItem)">
                   <ion-icon name="trash" slot="icon-only"></ion-icon>
                 </ion-item-option>
-              </ion-item-options>
-            </ion-item-sliding>
+              </ion-item-options>  
+
+          </ion-item-sliding>
         
 
       </ion-col>

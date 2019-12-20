@@ -115,7 +115,7 @@ public abstract class ElasticCrud {
     public String read() throws IOException {
         SearchRequest searchRequest = new SearchRequest(this.index);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchAllQuery()).size( 100 );
+        searchSourceBuilder.query(QueryBuilders.matchPhraseQuery("deleted", false)).size( 100 );
         searchRequest.source(searchSourceBuilder);
         SearchHits searchHits = this.client.search(searchRequest, RequestOptions.DEFAULT).getHits();
         List<Map> hits = new ArrayList<Map>();

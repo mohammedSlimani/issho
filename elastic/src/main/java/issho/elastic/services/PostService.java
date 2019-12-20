@@ -32,7 +32,10 @@ public class PostService extends ElasticCrud{
     public String getByUser(String userId) throws IOException {
         SearchRequest searchRequest = new SearchRequest(this.index);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchPhraseQuery("authorId", userId));
+        searchSourceBuilder.query(
+                QueryBuilders.boolQuery()
+                        .must( QueryBuilders.matchPhraseQuery("authorId", userId))
+                        .must( QueryBuilders.matchPhraseQuery("deleted", false)));
         searchRequest.source(searchSourceBuilder);
         SearchHits searchHits = this.client.search(searchRequest, RequestOptions.DEFAULT).getHits();
         List<Map> hits = new ArrayList<Map>();
