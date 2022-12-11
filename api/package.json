@@ -11,7 +11,7 @@
     "cors": "^2.8.5",
     "cuid": "^2.1.6",
     "email-validator": "^2.0.4",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "nodemon": "^2.0.2"
   },
   "scripts": {
